@@ -1,0 +1,37 @@
+{% extends "_base.html" %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row align-items-center justify-content-center" style="min-height: calc(70vh - 150px);">
+        <div class="col text-center alert">{{ notification }}</div>
+    </div>
+        <div class="row">
+            <div class="col text-center">
+                <button type="button" class="btn btn-primary m-2" onclick="location.href='?seed=true';">Seed</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col text-center">
+                <button type="button" class="btn btn-primary m-2" onclick="location.href='?delete=true';">Delete</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col text-center">
+                <button type="button" class="btn btn-primary m-2" onclick="location.href='?seedgrantsall=true';">Seed All Grants</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col text-center">
+                <button type="button" class="btn btn-primary m-2" onclick="location.href='?seedgrantsdaily=true';">Seed Daily Grants</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col text-center">
+                <button type="button" class="btn btn-primary m-2" onclick="location.href='?deletegrants=true';">Delete All Grants</button>
+            </div>
+        </div>
+</div>
+
+
+{% endblock %}

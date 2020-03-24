@@ -1,0 +1,6 @@
+If you wish to modify these react components first follow these steps:
+1. install npm
+2. run `npm i` to install all packages from package.json
+3. run `npm run build` to build once
+or
+3. run `npm run watch` to rebuild every time a jsx file is saved

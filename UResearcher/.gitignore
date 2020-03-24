@@ -1,0 +1,22 @@
+#################################################
+## .gitignore file for UResearcher application ##
+#################################################
+
+# instance folder 
+# by default exclude all files, please add the file you want to keep below
+instance/*
+!instance/config.py.example
+
+# supports
+# by default exclude all files, please add the file you want to keep below
+uresearcher_app/supports/*
+!uresearcher_app/supports/es.py
+!uresearcher_app/supports/support.py
+!uresearcher_app/supports/doaj_article_data/instructions_for_seeding.txt
+
+# venv
+*venv*/
+
+# others
+uresearcher_app/static/node/node_modules/
+uresearcher_app/static/node/v8-compile-cache-0/

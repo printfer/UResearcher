@@ -1,0 +1,70 @@
+/* general */
+body,
+html {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background: #edfff3;
+}
+
+/* search bar */
+.search_input {
+	caret-color: red;
+	height: 52px;
+}
+.search_button {
+    background-color: #f8f9fa;
+}
+.search_button:hover {
+    background-color: #e70000;
+}
+
+/* summary card */
+.summary_card {
+	width: 18rem;
+}
+
+/* sidebar main buttons */
+#sidebar .MuiTab-wrapper {
+	font-size: 11px;
+}
+
+.MuiTab-wrapper > i {
+	font-size: 1.5rem;
+}
+
+
+/* sidebar bottom buttons */
+a.nav-link {
+	color: #757575;
+}
+
+/* LKA tsne graph hint */
+.tsne-hint {
+	color: white;
+	background-color: black;
+	padding: 1px 4px 2px 4px;
+	border-radius: 15%;
+}
+
+/* LKA Phrase Connections */
+.phrase-connections-btn {
+	height: 40px;
+    width: 40px;
+    float: right;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    background: #343a40;
+    cursor: pointer;
+}
+.phrase-connections-btn > .fa-plus-square,  .phrase-connections-btn > .fa-minus-square {
+	color: white;
+}
+
+/* others */
+.hidden {
+	display: none;
+}

@@ -1,0 +1,2 @@
+ELS_API_KEY = 'your_key_here',
+SQLALCHEMY_DATABASE_URI = "sqlite:////tmp/uresearcher.db"
