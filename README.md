@@ -23,8 +23,8 @@ UResearcher is an invaluable application for researchers to reduce unnecessary s
 
 ### Special Thanks
 
-- [Pai Wang](https://mech.utah.edu/faculty/pai-wang/)
-- [Joseph L. Zachary](https://www.cs.utah.edu/~zachary/)
+- <a href="https://mech.utah.edu/faculty/pai-wang/" target="_blank">Pai Wang</a>
+- <a href="https://www.cs.utah.edu/~zachary/" target="_blank">Joseph L. Zachary</a>
 
 ### License
 - [LICENSE](LICENSE)
