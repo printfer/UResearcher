@@ -36,7 +36,7 @@ export default class PhraseConnections extends React.Component {
 			})
 		}
 
-		fetch("/phrase/" + window.location.search.substr(7), config)
+		fetch("/phrase", config)
 			.then(res => res.json())
 			.then((result) => {
 				this.setState({ 

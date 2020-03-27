@@ -5,13 +5,7 @@
 
 ### On Windows 
 
-First, setup user Elsevier Developers Key: 
-
-Copy `instance/config.py.example` to `instance/config.py`
-
-Edit `config.py`, add your key after `ELS_API_KEY = `
-
-When you use UResearcher at the first time run:
+When you use UResearcher at the first time, do setup:
 
 `setup_windows.bat`
 
@@ -24,17 +18,9 @@ to run it, type:
 `python3 run.py`
 
 
-### On Linux
+### On Linux (Bash)
 
-First, setup user Elsevier Developers Key:
-
-`cp instance/config.py.example  instance/config.py`
-
-`vi config.py`
-
-Add your key after `ELS_API_KEY = `
-
-When you use UResearcher at the first time run:
+When you use UResearcher at the first time, do setup:
 
 `./setup_linux.sh`
 
@@ -46,4 +32,6 @@ to run it, type:
 
 ## Developer Guide
 
-
+- [Front-end Setup](uresearcher_app/static/node/one-time-setup.txt)
+- [Research Database Access Support](uresearcher_app/supports)
+- [UResearcher Function Modules](uresearcher_app/controllers/modules)

@@ -5,9 +5,10 @@ from . import db
 
 from .modules.clustering import make_clusters
 from .modules.grant_analysis import complete_analysis, complete_update, daily_update
-from .modules.keyword_analysis import get_keywords, generate_new_keywords, generate_grant_keywords
+from .modules.keyword_analysis import get_keywords#, generate_new_keywords, generate_grant_keywords
 from .modules.latent_knowledge_analysis import get_2d_projection, get_cosine_list, get_phrase_connections, get_analogy_list
 from .modules.citation_analysis import citation_count_query
+from .modules.summarization import summarize_articles
 
 
 def route_init(app):
@@ -42,18 +43,19 @@ def route_init(app):
 	#############################
 	@app.route('/db')
 	def db_page():
-		# seed db
-		requestSeed = request.args.get('seed')
-		requestSeed = str(requestSeed).lower()
-		if(requestSeed == 'true'):
-			status = db.db_seed()
-			return render_template('db.html', notification=status)
-		# delete db
-		requestDelete = request.args.get('delete')
-		requestDelete = str(requestDelete).lower()
-		if(requestDelete == 'true'):
-			status = db.db_delete()
-			return render_template('db.html', notification=status)
+		## These first two methods are obsolete
+		# # seed db
+		# requestSeed = request.args.get('seed')
+		# requestSeed = str(requestSeed).lower()
+		# if(requestSeed == 'true'):
+		# 	status = db.db_seed()
+		# 	return render_template('db.html', notification=status)
+		# # delete db
+		# requestDelete = request.args.get('delete')
+		# requestDelete = str(requestDelete).lower()
+		# if(requestDelete == 'true'):
+		# 	status = db.db_delete()
+		# 	return render_template('db.html', notification=status)
 		# Seeding All Grants
 		requestSeed = request.args.get('seedgrantsall')
 		requestSeed = str(requestSeed).lower()
@@ -116,9 +118,9 @@ def route_init(app):
 	# Get Clusters
 	@app.route('/clusters/<string:query>')
 	def get_clusters(query):
-		article_list = db.get_current_search()
-		clusters = make_clusters(article_list)
-		db.save_clusters(clusters) # save clusters to db for later retreval
+		#article_list = db.get_current_search()
+		clusters = []#make_clusters(article_list)
+		#db.save_clusters(clusters) # save clusters to db for later retreval
 		# final data should be in form { nodes: [], links: [] }
 		nodes = [{'id': 'root', 'name': query, 'val': 10}]
 		nodes += [{'id': cluster, 'name': cluster, 'val': 5} for cluster in clusters]
@@ -144,6 +146,7 @@ def route_init(app):
 	def get_keyword_analysis():
 		article_list = db.get_current_search()
 		labels, frequencies = get_keywords(article_list)
+		# labels = [{'title': label} for label in labels]
 		return jsonify({'data': frequencies, 'labels': labels})
 
 	# LKA Vocab (for autocomplete text fields)
@@ -196,3 +199,10 @@ def route_init(app):
 		# get analogy results 
 		analogy = get_analogy_list(article_list, word1, word2, word3)
 		return jsonify({'word_list': analogy})
+
+	# Summarization
+	@app.route('/summary')
+	def get_summary():
+		articles = db.get_current_search()
+		summary = summarize_articles(articles)
+		return jsonify({'summary': summary})

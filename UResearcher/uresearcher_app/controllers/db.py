@@ -3,29 +3,14 @@ from flask_sqlalchemy import SQLAlchemy
 from ..supports import support
 from elasticsearch import Elasticsearch
 
-import typing # messing with static typing
-
 db = SQLAlchemy()
-es = Elasticsearch(['https://search-test2-rafnssinwfmvmuhivk5gstd7lq.us-east-2.es.amazonaws.com'])
-
-# class Article(db.Model):
-# 	id = db.Column(db.Integer, primary_key=True)
-# 	title = db.Column(db.Text, nullable=False)
-# 	abstract = db.Column(db.Text, nullable=True)
-# 	# abstract_formatted = db.Column(db.Text, nullable=True)
-# 	fulltext = db.Column(db.Text, nullable=True)
-# 	doi = db.Column(db.String(50), nullable=True)
-# 	eid = db.Column(db.String(50), nullable=True)
-# 	link = db.Column(db.Text, nullable=True)
-# 	publisher = db.Column(db.Text, nullable=True)
-# 	publish_date = db.Column(db.Text, nullable=True)
-# 	keywords = db.Column(db.Text, nullable=True)
+es = Elasticsearch(['https://search-test2-rafnssinwfmvmuhivk5gstd7lq.us-east-2.es.amazonaws.com']) # for development
+# es = Elasticsearch(['localhost:9200']) # for deployment
 
 class CurrentSearch(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	title = db.Column(db.Text, nullable=False)
 	abstract = db.Column(db.Text, nullable=True)
-	# abstract_formatted = db.Column(db.Text, nullable=True)
 	fulltext = db.Column(db.Text, nullable=True)
 	doi = db.Column(db.String(50), nullable=True)
 	eid = db.Column(db.String(50), nullable=True)
@@ -38,7 +23,6 @@ class SavedCluster(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	title = db.Column(db.Text, nullable=False)
 	abstract = db.Column(db.Text, nullable=True)
-	# abstract_formatted = db.Column(db.Text, nullable=True)
 	fulltext = db.Column(db.Text, nullable=True)
 	doi = db.Column(db.String(50), nullable=True)
 	eid = db.Column(db.String(50), nullable=True)
@@ -79,26 +63,12 @@ def db_delete():
 	print("db deleted!")
 	status = "Database deleted successfully!"
 	return status
-
-# # database add record
-# def db_add_record(title, abstract, abstract_formatted, fulltext, doi, eid, link, publisher, publish_date, keywords):
-# 	global db
-# 	db_record = Article(title=title, abstract=abstract, abstract_formatted=abstract_formatted, fulltext=fulltext, doi=doi, eid=eid, link=link, publisher=publisher, publish_date=publish_date, keywords=keywords)
-# 	db.session.add(db_record)
-# 	db.session.commit()
-
-# # adds a list of articles to the db
-# def db_add_records(records):
-# 	for record in records:
-# 		db_record = Article(title=record['title'], abstract=record['abstract'], abstract_formatted=record['abstract_formatted'], fulltext=record['fulltext'], doi=record['doi'], eid=record['eid'], link=record['link'], publisher=record['publisher'], publish_date=record['publish_date'], keywords=record['keywords'])
-# 		db.session.add(db_record)
-# 	db.session.commit()
 	
 # queries the database for all articles that match this query, which would come from the searchbar
 def search_articles(query):
 	# query our elasticsearch database
 	# size parameter is the maximum number of articles to be returned, using 100 for testing purposes
-	articles = es.search(index='test_index', size='1000', body={'query': {'match': {'title': query}}}, sort="publish_date:desc")
+	articles = es.search(index='test_index', size='100', body={'query': {'match': {'title': query}}}, sort="publish_date:desc")
 	# convert the returned object to the appropriate form
 	articles = articles['hits']['hits']
 	return_articles = [article['_source'] for article in articles]
@@ -106,7 +76,7 @@ def search_articles(query):
 	return return_articles
 
 # saves the most recent search in the local db (for efficiency)
-def save_current_search(articles: typing.List[typing.Dict[str, str]]) -> None: # an example of static typing with python
+def save_current_search(articles):
 	'''Saves the most recent search in the local db (for efficiency).'''
 	# delete old search
 	db.session.query(CurrentSearch).delete()

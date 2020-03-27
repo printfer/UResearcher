@@ -8,23 +8,23 @@ UResearcher is an invaluable application for researchers to reduce unnecessary s
 
 ## Instructions
 
-- [User Instruction](UResearcher/README.md)
-- [Dev Instruction](UResearcher/README.md)
+- [User Instruction](UResearcher/README.md#user-guide)
+- [Dev Instruction](UResearcher/README.md#developer-guide)
 - [UResearcher Documents](doc/README.md)
 
 
 
 ## Others
 
-### External Libraries:
+### External Libraries
 
 - [Python 3.5 (or greater)](UResearcher/requirements.txt)
 - [React 16.12.0 (or greater)](UResearcher/uresearcher_app/static/node/package.json)
 
 ### Special Thanks
 
-- <a href="https://mech.utah.edu/faculty/pai-wang/" target="_blank">Pai Wang</a>
-- <a href="https://www.cs.utah.edu/~zachary/" target="_blank">Joseph L. Zachary</a>
+- [Pai Wang](uresearcher_app/static/node/one-time-setup.txt)
+- [Joseph L. Zachary](https://www.cs.utah.edu/~zachary/)
 
 ### License
 - [LICENSE](LICENSE)

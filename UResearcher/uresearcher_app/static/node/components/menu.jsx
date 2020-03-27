@@ -1,6 +1,5 @@
 import React from 'react';
 import clsx from 'clsx';
-import Drawer from '@material-ui/core/Drawer';
 import { useTheme } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -25,10 +24,6 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import Link from '@material-ui/core/Link';
 
-
-
-
-/* const drawerWidth = 240; */
 
 
 /* StyledMenu */
@@ -122,50 +117,6 @@ const useStyles = makeStyles(theme => ({
             duration: theme.transitions.duration.leavingScreen,
         }),
     },
-    /* 
-    appBarShift: {
-        width: `calc(100% - ${drawerWidth}px)`,
-        transition: theme.transitions.create(['margin', 'width'], {
-            easing: theme.transitions.easing.easeOut,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-        marginRight: drawerWidth,
-    },
-    hide: {
-        display: 'none',
-    },
-    drawer: {
-        width: drawerWidth,
-        flexShrink: 0,
-    },
-    drawerPaper: {
-        width: drawerWidth,
-        backgroundColor: '#e0f2f1',
-    },
-    drawerHeader: {
-        display: 'flex',
-        alignItems: 'center',
-        padding: theme.spacing(0, 1),
-        ...theme.mixins.toolbar,
-        justifyContent: 'flex-start',
-    },
-    content: {
-        flexGrow: 1,
-        padding: theme.spacing(3),
-        transition: theme.transitions.create('margin', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.leavingScreen,
-        }),
-        marginRight: -drawerWidth,
-    },
-    contentShift: {
-        transition: theme.transitions.create('margin', {
-            easing: theme.transitions.easing.easeOut,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-        marginRight: 0,
-    },
-    */
     
 
 }));
@@ -214,14 +165,6 @@ export default function SearchAppBar({searchValueInput, placeholderInput, enable
 
     return (
         <div className={classes.root}>
-            {/*
-            <AppBar
-                style={{ background: 'teal' }}
-                className={clsx(classes.appBar, {
-                    [classes.appBarShift]: open,
-                })}
-            >
-            */}
             <AppBar
                 style={{ background: 'teal' }}
                 className={clsx(classes.appBar, )}
@@ -253,18 +196,6 @@ export default function SearchAppBar({searchValueInput, placeholderInput, enable
                             </div>
                         ): null}
                     </div>
-                    {/*
-                    <IconButton
-                        edge="start"
-                        className={classes.menuButton}
-                        color="inherit"
-                        aria-label="open drawer"
-                        onClick={handleDrawerOpen}
-                        className={clsx(open && classes.hide)}
-                    >
-                        <MenuIcon />
-                    </IconButton>
-                    */}
                     <IconButton
                         edge="start"
                         className={classes.menuButton}
@@ -294,14 +225,14 @@ export default function SearchAppBar({searchValueInput, placeholderInput, enable
                         <ListItemText primary="Home" />
                     </StyledMenuItem>
                 </Link>
-                <Link href="/about" color="inherit">
+                <a href="https://github.com/printfer/UResearcher/blob/master/README.md" color="inherit" target="_blank">
                     <StyledMenuItem>
                         <ListItemIcon>
                             <InfoIcon fontSize="small" />
                         </ListItemIcon>
                         <ListItemText primary="About" />
                     </StyledMenuItem>
-                </Link>
+                </a>
                 <Divider/>
                 <Link href="/settings" color="inherit">
                     <StyledMenuItem>
@@ -312,50 +243,6 @@ export default function SearchAppBar({searchValueInput, placeholderInput, enable
                     </StyledMenuItem>
                 </Link>
             </StyledMenu>
-
-
-            {/*
-            <Drawer
-                className={classes.drawer}
-                variant="persistent"
-                anchor="right"
-                open={open}
-                classes={{
-                    paper: classes.drawerPaper,
-                }}
-            >
-                <div className={classes.drawerHeader}>
-                    <IconButton onClick={handleDrawerClose}>
-                        {theme.direction === 'rtl' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-                    </IconButton>
-                </div>
-                <Divider />
-                <List>
-                    <a href="/">
-                        <ListItem button key="Home">
-                            <ListItemIcon><HomeIcon /></ListItemIcon>
-                            <ListItemText primary="Home" />
-                        </ListItem>
-                    </a>
-                    <a href="/about">
-                        <ListItem button key="About">
-                            <ListItemIcon><InfoIcon /></ListItemIcon>
-                            <ListItemText primary="About" />
-                        </ListItem>
-                    </a>
-                </List>
-                <Divider />
-                <List>
-                    <a href="/settings">
-                        <ListItem button key="Settings">
-                            <ListItemIcon><SettingsIcon /></ListItemIcon>
-                            <ListItemText primary="Settings" />
-                        </ListItem>
-                    </a>
-                </List>
-            </Drawer>
-            */}
-
 
         </div>
     );

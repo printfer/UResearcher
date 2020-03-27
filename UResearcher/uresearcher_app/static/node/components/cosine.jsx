@@ -19,8 +19,8 @@ export default class Cosine extends React.Component {
 	getCosineList() {
 		this.setState({listLoaded: false});
 
-		// does an ajax call to get the data using the query in the url
-		fetch("/cosine/" + window.location.search.substr(7) + "/" + this.state.value)
+		// does an ajax call to get the data using the current search
+		fetch("/cosine/" + this.state.value)
 			.then(res => res.json())
 			.then((result) => {
 				this.setState({ 

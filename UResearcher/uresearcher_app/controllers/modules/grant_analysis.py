@@ -101,9 +101,9 @@ def get_grant_data_points(list_of_grants):
 	result_ceil = {}
 
 	for grant in list_of_grants:
-		date =  grants["Post"]
-		floor = grants["Floor"]
-		ceil = grants["Ceiling"]
+		date =  grant["date"]
+		floor = grant["floor"]
+		ceil = grant["ceiling"]
 
 		if floor != 0:
 			if date in result_floor:
@@ -132,13 +132,11 @@ def complete_analysis(data):
 	ret_floors = []
 	for k, v in floors.items():
 		 # convert to unix timestamp for simplicity
-		time = (datetime.strptime(k, '%m%d%Y') - datetime(1970,1,1)).total_seconds()
-		ret_floors += [[time, v]]
+		ret_floors += [[k, v]]
 
 	ret_ceils = []
 	for k, v in ceilings.items():
-		time = (datetime.strptime(k, '%m%d%Y') - datetime(1970,1,1)).total_seconds()
-		ret_ceils += [[time, v]]
+		ret_ceils += [[k, v]]
 
 	## Sorting by Date
 	ret_floors = sorted(ret_floors, key = sort_by_date_key)
@@ -149,8 +147,6 @@ def complete_analysis(data):
 	ret_ceils = [{'x': p[0], 'y': p[1]} for p in ret_ceils]
 
 	return ret_floors, ret_ceils
-
-
 
 
 ## Executable Definition for Testing

@@ -14,6 +14,9 @@ uresearcher_app/supports/*
 !uresearcher_app/supports/support.py
 !uresearcher_app/supports/doaj_article_data/instructions_for_seeding.txt
 
+# database
+uresearcher_app/uresearcher.db
+
 # venv
 *venv*/
 

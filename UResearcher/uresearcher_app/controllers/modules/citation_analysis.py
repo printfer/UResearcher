@@ -4,7 +4,7 @@ from json import loads
 
 
 
-def citation_count_query(article,api_key):
+def citation_count_query(article, api_key):
 
 	if article['doi'] is None:
 		return None

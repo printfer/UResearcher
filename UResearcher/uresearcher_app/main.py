@@ -17,7 +17,7 @@ app.config.from_mapping(
     # a default secret that should be overridden by instance config
     SECRET_KEY="key",
     # default db path
-    SQLALCHEMY_DATABASE_URI = "sqlite:////tmp/uresearcher.db",
+    SQLALCHEMY_DATABASE_URI = "sqlite:///uresearcher.db",
     # FSADeprecationWarning: SQLALCHEMY_TRACK_MODIFICATIONS adds significant overhead and will be disabled by default in the future.  Set it to True or False to suppress this warning.
     SQLALCHEMY_TRACK_MODIFICATIONS= False
 )

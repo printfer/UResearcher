@@ -31,7 +31,7 @@ export default class LKA extends React.Component {
 					<Tab label="Keyword Projection" />
 					<Tab label="Cosine Similarity" />
 					<Tab label="Phrase Connections" />
-					<Tab label="Analogies" />
+					{/* <Tab label="Analogies" /> */}
 				</Tabs>
 				<Divider />
 
@@ -45,7 +45,7 @@ export default class LKA extends React.Component {
 					/>
 					<Cosine show={this.state.selectedTab == 1} vocab={this.props.vocab} />
 					<PhraseConnections show={this.state.selectedTab == 2} vocab={this.props.vocab} />
-					<Analogies show={this.state.selectedTab == 3} />
+					{/* <Analogies show={this.state.selectedTab == 3} /> */}
 				</div>
 			</div>
 		)

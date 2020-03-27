@@ -61,128 +61,6 @@ def generate_grant_keywords(text):
 	res = ', '.join(keywords)
 	
 	return res
-
-
-#This will generate new keywords for an article(based on frequency of occurance)
-def generate_new_keywords(article):
-	
-	
-	try:
-	
-	#Find keywords on an article to article basis
-	#for article in articles:	
-	
-		sentences = []	
-		#Generate keywords and use as primary keyword results
-		if article['keywords'] is None:
-			keywords = []
-				
-			#Generate keywords and append to publisher established keywords
-		else:
-			#Get established keywords, then do some basic preprocessing
-			##
-			## More preprocessing required here to avoid ANY duplicates
-			##
-			ktemp = article['keywords']
-			ktemp2 = ktemp.split(',')
-			keywords = [x.lower().lstrip() for x in ktemp2]
-				
-				
-		## FULL TEXT VERSION
-		#if article.fulltext is None:
-		#	continue
-		#else: 			
-		#	article_sentences = nltk.tokenize.sent_tokenize(article.fulltext)
-
-			
-				
-		## Abstracts Version
-		if article['abstract'] is None:
-			return None
-		else:
-			article_sentences = nltk.tokenize.sent_tokenize(article['abstract'])
-			
-		for curr_sentence in article_sentences:
-		
-			#Preprocessing(Remove stopwords)
-			preproc = sentence_parsing(curr_sentence)
-				
-			#print("PREPROC:", preproc)
-			#sentences.append(nltk.tokenize.word_tokenize(preproc))
-			#print(tokenize.word_tokenize(curr_sentence))
-
-			sentences.append(preproc)
-		
-				
-				
-		#Set up text for tokenization with nltk
-		stringtest = ''	
-		for lst in sentences:
-			for v in lst:
-				stringtest += ' ' + v
-			
-		words = nltk.tokenize.word_tokenize(stringtest)
-
-
-		#Singular Word Frequencies.
-		fdist1 = nltk.FreqDist(words)
-
-		#bigrams
-		bgs = nltk.bigrams(words)	
-		fdist2 = nltk.FreqDist(bgs)
-			
-		#Trigrams
-		tgs = nltk.trigrams(words)
-		fdist3 = nltk.FreqDist(tgs)
-			
-		#Create sorted list from the dict. 
-		output = sorted(fdist2.items(), key=lambda x: x[1], reverse=True)
-		output2 = sorted(fdist3.items(), key=lambda x: x[1], reverse=True)
-			
-		#Set up redundancycheck, all to be added keywords go in here, and we will check against already established keywords.
-		redundancycheck = []
-		for val in fdist1.most_common(5):
-			redundancycheck.append(val[0])
-
-		for val in output:
-			#Change bias parameter here?
-			if val[1] > 2:
-				tempkeyword = val[0][0] + " " + val[0][1]		
-				redundancycheck.append(tempkeyword)
-				
-		
-		for val in output2:
-			#Change bias parameter here?
-			if val[1] > 2:
-				tempkeyword = val[0][0] + " " + val[0][1] + " " + val[0][2]
-				redundancycheck.append(tempkeyword)
-		
-			
-			
-		#print("GENERATED:", redundancycheck)
-		#print("DEFAULT:", keywords)
-
-		for val in redundancycheck:
-				
-			#If this generated keyword is a duplicate, do not add. Otherwise, add it.
-			if val in keywords:
-				continue
-			else:
-				temp = (val.encode('ascii', 'ignore')).decode("utf-8")
-				keywords.append(temp)
-			
-			
-		#Change keyword list back to string, then set it as the articles value.
-		article['keywords'] = ', '.join(keywords)
-			
-		#print("UPDATED KEYWORDS:", article['keywords'])
-		
-		return article
-	
-	except UnicodeEncodeError:
-		return article['keywords']
-	
-	
 	
 	
 #test = get_keywords(CurrentSearch.query.all())
@@ -194,7 +72,8 @@ def get_keywords(articles):
 
 	#generate_new_keywords(articles)
 	worddict = {}
-
+	sortdict = {}
+	
 	for article in articles:
 		
 		if article['keywords'] is None:
@@ -221,6 +100,8 @@ def get_keywords(articles):
 			#temp = re.findall(r'"(.*?)"', lower)
 			temp = lower.split(',')
 			
+			
+			
 
 			for val in temp:		
 				if val == "":
@@ -231,11 +112,22 @@ def get_keywords(articles):
 					
 						if time in worddict[val]:
 							worddict[val][time] = worddict[val][time] + 1
+							
 						else:
 							worddict[val][time] = 1
-						
+							
+							
 					else:
 						worddict[val] = {time:1}
+						
+						
+					if val in sortdict:
+						sortdict[val] = sortdict[val] + 1
+					else:
+						sortdict[val] = 1
+
+					
+					
 				else:
 					valsplit = val.split(",")
 					valsplit = [x.strip() for x in valsplit]
@@ -246,22 +138,47 @@ def get_keywords(articles):
 
 							if time in worddict[nval]:
 								worddict[nval][time] = worddict[nval][time] + 1
+								
 							else:
 								worddict[nval][time] = 1
-						
+								
+							
 						else:
 							worddict[nval] = {time:1}
+							
+							
+						if nval in sortdict:
+							sortdict[nval] = sortdict[nval] + 1
+						else:
+							sortdict[nval] = 1
 	
+	
+	sr = sorted(sortdict.items(), key=lambda x: x[1], reverse=True)
+	if len(sr) > 35:
+		topres = sr[:35]
+		topdict = dict(topres)
+		#print("TOP:", topdict)
+	else:
+		#print(sr)
+		topdict = dict(sr)
+		
 	
 	#Set up objects for graphing. Look at return type for more info.
 	kwdict = {}
 	for k, v in worddict.items():
-		kwdict[k] = []
-		
-		for time, freq in v.items():
-			kwdict[k].append({'x': time, 'y': freq})
+	
+		if k in topdict:
+			kwdict[k] = []
+			
+			for time, freq in v.items():
+				kwdict[k].append({'x': time, 'y': freq})
+		else:
+			continue
 
 	labels, frequencies = [label for label in kwdict], [kwdict[label] for label in kwdict]
+	
+	#for i in range(len(labels)):
+		#print("LABEL:", labels[i], "FREQ:", frequencies[i])
 	
 	#print("\n\nlabels:", labels)
 	#print("\n\nfreqs:", frequencies)

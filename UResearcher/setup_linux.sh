@@ -13,3 +13,5 @@ python3 -m pip install --upgrade pip
 pip install -r requirements.txt
 python3 -m nltk.downloader 'punkt'
 python3 -m nltk.downloader 'averaged_perceptron_tagger'
+python3 -m nltk.downloader 'stopwords'
+
