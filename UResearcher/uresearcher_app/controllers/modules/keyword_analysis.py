@@ -1,10 +1,15 @@
 import time
 import re
 import nltk
+from nltk.collocations import *
 from datetime import datetime
 from .preprocessing import sentence_parsing
+from textblob import TextBlob
+
+
 
 #Generates keywords from grant text. 
+#Returns a list of the keywords
 def generate_grant_keywords(text):
 
 	sentences = []
@@ -24,53 +29,34 @@ def generate_grant_keywords(text):
 			
 	words = nltk.tokenize.word_tokenize(stringtest)
 	
+	
+	blobs = TextBlob(text)
+	blobphrases = blobs.noun_phrases
+	
+	
 	#Singular Word Frequencies.
 	fdist1 = nltk.FreqDist(words)
 
-	#bigrams
-	bgs = nltk.bigrams(words)	
-	fdist2 = nltk.FreqDist(bgs)
-			
-	#Trigrams
-	tgs = nltk.trigrams(words)
-	fdist3 = nltk.FreqDist(tgs)
-			
-	#Create sorted list from the dict. 
-	output = sorted(fdist2.items(), key=lambda x: x[1], reverse=True)
-	output2 = sorted(fdist3.items(), key=lambda x: x[1], reverse=True)
-			
+
 	#Found holds all found keywords(Singles,Bigrams,Trigrams)
 	found = []
-	for val in fdist1.most_common(5):
+	for val in fdist1.most_common(15):
 		found.append(val[0])
-
-	for val in output:
-		#Change bias parameter here?
-		if val[1] > 2:
-			tempkeyword = val[0][0] + " " + val[0][1]		
-			found.append(tempkeyword)
-				
 		
-	for val in output2:
-		#Change bias parameter here?
-		if val[1] > 2:
-			tempkeyword = val[0][0] + " " + val[0][1] + " " + val[0][2]
-			found.append(tempkeyword)
-				
-	#Change keyword list back to string
-	res = ', '.join(keywords)
+	for val in blobphrases:
+		found.append(val)
+
+
+	res = ",".join(found)
 	
-	return res
+	return found
 	
-	
-#test = get_keywords(CurrentSearch.query.all())
 
 #For the keywords in a grouping of articles, will return the filtered keywords and 
 #their respective dates. 
-#Note: these are currently the innate keywords for a given article, as given by the publisher. 
 def get_keywords(articles):
 
-	#generate_new_keywords(articles)
+
 	worddict = {}
 	sortdict = {}
 	
@@ -157,9 +143,7 @@ def get_keywords(articles):
 	if len(sr) > 35:
 		topres = sr[:35]
 		topdict = dict(topres)
-		#print("TOP:", topdict)
 	else:
-		#print(sr)
 		topdict = dict(sr)
 		
 	
@@ -177,10 +161,98 @@ def get_keywords(articles):
 
 	labels, frequencies = [label for label in kwdict], [kwdict[label] for label in kwdict]
 	
-	#for i in range(len(labels)):
-		#print("LABEL:", labels[i], "FREQ:", frequencies[i])
-	
-	#print("\n\nlabels:", labels)
-	#print("\n\nfreqs:", frequencies)
 
 	return labels, frequencies
+	
+	
+	
+	
+###################################
+#def generate_new_keywords(article):
+#		
+#	try:
+#	
+#	#Find keywords on an article to article basis
+#	#for article in articles:	
+#	
+#		sentences = []	
+#		#Generate keywords and use as primary keyword results
+#		if article['keywords'] is None:
+#			keywords = []
+#				
+#			#Generate keywords and append to publisher established keywords
+#		else:
+#			#Get established keywords, then do some basic preprocessing
+#			##
+#			## More preprocessing required here to avoid ANY duplicates
+#			##
+#			ktemp = article['keywords']
+#			ktemp2 = ktemp.split(',')
+#			keywords = [x.lower().lstrip() for x in ktemp2]
+#			
+#
+#		## FULL TEXT VERSION
+#		#if article.fulltext is None:
+#		#	continue
+#		#else: 			
+#		#	article_sentences = nltk.tokenize.sent_tokenize(article.fulltext)
+#
+#				
+#		## Abstracts Version
+#		if article['abstract'] is None:
+#			return None
+#		else:
+#			article_sentences = nltk.tokenize.sent_tokenize(article['abstract'])
+#			
+#		
+#		blobs = TextBlob(article['abstract'])
+#		
+#		for curr_sentence in article_sentences:
+#		
+#			#Preprocessing(Remove stopwords)
+#			preproc = sentence_parsing(curr_sentence)
+#			sentences.append(preproc)
+#		
+#
+#		#Set up text for tokenization with nltk
+#		stringtest = ''	
+#		for lst in sentences:
+#			for v in lst:
+#				stringtest += ' ' + v
+#		
+#		words = nltk.tokenize.word_tokenize(stringtest)
+#
+#
+#		#Singular Word Frequencies.
+#		fdist1 = nltk.FreqDist(words)
+#			
+#		#Set up redundancycheck, all to be added keywords go in here, and we will check against already established keywords.
+#		redundancycheck = []
+#
+#		for val in fdist1.most_common(7):
+#			redundancycheck.append(val[0])
+#			
+#
+#		for val in blobs.noun_phrases:
+#			redundancycheck.append(val)
+#
+#		added = []
+#		for val in redundancycheck:
+#				
+#			#If this generated keyword is a duplicate, do not add. Otherwise, add it.
+#			if val in keywords or val in added:
+#				continue
+#			else:
+#				added.append(val)
+#				temp = (val.encode('ascii', 'ignore')).decode("utf-8")
+#				keywords.append(temp)
+#
+#		
+#		
+#		#Change keyword list back to string, then set it as the articles value.
+#		article_keywords = ",".join(keywords)
+#			
+#		return article
+#	
+#	except UnicodeEncodeError:
+#		return article['keywords']

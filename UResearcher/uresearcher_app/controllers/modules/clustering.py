@@ -99,7 +99,7 @@ def make_clusters(articles):
 	svd = TruncatedSVD(n_components=100)
 	normalizer = Normalizer(copy=False)
 	lsa = make_pipeline(svd, normalizer)
-	X = lsa.fit_transform(X)
+	#X = lsa.fit_transform(X)
 
 	# do clustering
 	km = MiniBatchKMeans(n_clusters=num_clusters, init='k-means++')
@@ -121,7 +121,6 @@ def make_clusters(articles):
 		label = getClusterLabel(clusters[cluster])
 		labeled_clusters[label] = clusters[cluster]
 
-	del clusters
 	return labeled_clusters
 
 

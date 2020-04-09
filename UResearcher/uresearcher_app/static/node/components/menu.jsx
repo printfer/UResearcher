@@ -225,14 +225,14 @@ export default function SearchAppBar({searchValueInput, placeholderInput, enable
                         <ListItemText primary="Home" />
                     </StyledMenuItem>
                 </Link>
-                <a href="https://github.com/printfer/UResearcher/blob/master/README.md" color="inherit" target="_blank">
+                <Link href="https://github.com/printfer/UResearcher/blob/master/README.md" color="inherit" target="_blank">
                     <StyledMenuItem>
                         <ListItemIcon>
                             <InfoIcon fontSize="small" />
                         </ListItemIcon>
                         <ListItemText primary="About" />
                     </StyledMenuItem>
-                </a>
+                </Link>
                 <Divider/>
                 <Link href="/settings" color="inherit">
                     <StyledMenuItem>

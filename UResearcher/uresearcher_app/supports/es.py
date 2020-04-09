@@ -5,6 +5,7 @@ import time
 import re
 import nltk
 from datetime import datetime
+from textblob import TextBlob
 from gensim.parsing.preprocessing import preprocess_string, strip_tags, strip_punctuation, remove_stopwords, strip_numeric
 
 #Processes a single sentence/string at a time
@@ -20,6 +21,7 @@ def sentence_parsing(sentence):
 	return processed
 
 #This will generate new keywords for an article(based on frequency of occurance)
+#Returns a list of the keywords.
 def generate_new_keywords(article_keywords, article_abstract):
 	try:
 	
@@ -56,19 +58,16 @@ def generate_new_keywords(article_keywords, article_abstract):
 		else:
 			article_sentences = nltk.tokenize.sent_tokenize(article_abstract)
 			
+			
+		blobs = TextBlob(article_abstract)
+			
 		for curr_sentence in article_sentences:
 		
 			#Preprocessing(Remove stopwords)
 			preproc = sentence_parsing(curr_sentence)
-				
-			#print("PREPROC:", preproc)
-			#sentences.append(nltk.tokenize.word_tokenize(preproc))
-			#print(tokenize.word_tokenize(curr_sentence))
-
 			sentences.append(preproc)
 		
-				
-				
+					
 		#Set up text for tokenization with nltk
 		stringtest = ''	
 		for lst in sentences:
@@ -81,47 +80,24 @@ def generate_new_keywords(article_keywords, article_abstract):
 		#Singular Word Frequencies.
 		fdist1 = nltk.FreqDist(words)
 
-		#bigrams
-		bgs = nltk.bigrams(words)	
-		fdist2 = nltk.FreqDist(bgs)
-			
-		#Trigrams
-		tgs = nltk.trigrams(words)
-		fdist3 = nltk.FreqDist(tgs)
-			
-		#Create sorted list from the dict. 
-		output = sorted(fdist2.items(), key=lambda x: x[1], reverse=True)
-		output2 = sorted(fdist3.items(), key=lambda x: x[1], reverse=True)
-			
 		#Set up redundancycheck, all to be added keywords go in here, and we will check against already established keywords.
 		redundancycheck = []
-		for val in fdist1.most_common(5):
+		
+		for val in fdist1.most_common(7):
 			redundancycheck.append(val[0])
 
-		for val in output:
-			#Change bias parameter here?
-			if val[1] > 2:
-				tempkeyword = val[0][0] + " " + val[0][1]		
-				redundancycheck.append(tempkeyword)
-				
-		
-		for val in output2:
-			#Change bias parameter here?
-			if val[1] > 2:
-				tempkeyword = val[0][0] + " " + val[0][1] + " " + val[0][2]
-				redundancycheck.append(tempkeyword)
-		
-			
-			
-		#print("GENERATED:", redundancycheck)
-		#print("DEFAULT:", keywords)
 
+		for val in blobs.noun_phrases:
+			redundancycheck.append(val)
+		
+		added = []
 		for val in redundancycheck:
 				
 			#If this generated keyword is a duplicate, do not add. Otherwise, add it.
-			if val in keywords:
+			if val in keywords or val in added:
 				continue
 			else:
+				added.append(val)
 				temp = (val.encode('ascii', 'ignore')).decode("utf-8")
 				keywords.append(temp)
 			
@@ -133,10 +109,8 @@ def generate_new_keywords(article_keywords, article_abstract):
 				final += [keyword]
 
 		#Change keyword list back to string, then set it as the articles value.
-		article_keywords = ', '.join(final)
+		article_keywords = ','.join(final)
 			
-		#print("UPDATED KEYWORDS:", article['keywords'])
-		
 		return article_keywords
 	
 	except UnicodeEncodeError:
@@ -144,8 +118,8 @@ def generate_new_keywords(article_keywords, article_abstract):
 
 def get_articles():
 	# count = 0
-	for i in range(4, 6):
-		with open('uresearcher_app/supports/doaj_article_data/article_batch_' + str(i) + '.json') as articles:
+	for i in range(1, 21):
+		with open('doaj_article_data/article_batch_' + str(i) + '.json') as articles:
 			data = json.load(articles)
 			db_articles = []
 			for row in data:
@@ -183,9 +157,9 @@ def get_articles():
 		print('done', i)
 
 
-# es = Elasticsearch(['https://search-test2-rafnssinwfmvmuhivk5gstd7lq.us-east-2.es.amazonaws.com'])
+#es = Elasticsearch(['https://search-test2-rafnssinwfmvmuhivk5gstd7lq.us-east-2.es.amazonaws.com'])
 es = Elasticsearch(['localhost:9200'])
-# es.indices.delete('test_index')
+es.indices.delete('test_index')
 bulk(es, get_articles())
 
 # print('done')

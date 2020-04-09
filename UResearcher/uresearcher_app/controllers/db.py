@@ -2,10 +2,12 @@
 from flask_sqlalchemy import SQLAlchemy
 from ..supports import support
 from elasticsearch import Elasticsearch
+from string import punctuation
+from .modules import query_parsing
 
 db = SQLAlchemy()
-es = Elasticsearch(['https://search-test2-rafnssinwfmvmuhivk5gstd7lq.us-east-2.es.amazonaws.com']) # for development
-# es = Elasticsearch(['localhost:9200']) # for deployment
+# es = Elasticsearch(['https://search-test2-rafnssinwfmvmuhivk5gstd7lq.us-east-2.es.amazonaws.com']) # for development
+es = Elasticsearch(['localhost:9200']) # for deployment
 
 class CurrentSearch(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
@@ -36,8 +38,10 @@ class Grants(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	keywords = db.Column(db.String(255), nullable = False)
 	date = db.Column(db.Integer, nullable = False)
+	close = db.Column(db.Integer, nullable = True)
 	floor = db.Column(db.Integer, nullable = True)
 	ceiling = db.Column(db.Integer, nullable = True)
+	category = db.Column(db.String(255), nullable=True)
 
 # init database
 def db_init(app):
@@ -121,19 +125,23 @@ def get_cluster(cluster):
 
 	return return_articles
 
-def save_grant(keywords, date, floor, ceiling):
-	new_grant = Grants(keywords= keywords, date= date, floor= floor, ceiling= ceiling)
+def save_grant(keywords, date, floor, ceiling, close, category):
+	new_grant = Grants(keywords= keywords, date= date,floor= floor, ceiling= ceiling, close= close, category= category)
 	db.session.add(new_grant)
 	db.session.commit()
 
 
-def get_grants(query):
+def get_grants(query, categories):
+	grant_query = query_parsing.parse_query(query)
 	grants =  Grants.query.all()
-	grant_query = query.split()
 	return_grants = []
 	for grant in grants:
-		if(all(x in grant.keywords.split(", ") for x in grant_query)):
-			return_grants.append(grant.__dict__)
+		if grant.category in categories:
+			keywords =  grant.keywords.split(",")
+			for word in grant_query:
+				if word in keywords:
+					return_grants.append(grant.__dict__)
+					break
 	return return_grants
 
 

@@ -5,7 +5,7 @@ from . import db
 
 from .modules.clustering import make_clusters
 from .modules.grant_analysis import complete_analysis, complete_update, daily_update
-from .modules.keyword_analysis import get_keywords#, generate_new_keywords, generate_grant_keywords
+from .modules.keyword_analysis import get_keywords, generate_grant_keywords#, generate_new_keywords, generate_grant_keywords
 from .modules.latent_knowledge_analysis import get_2d_projection, get_cosine_list, get_phrase_connections, get_analogy_list
 from .modules.citation_analysis import citation_count_query
 from .modules.summarization import summarize_articles
@@ -63,7 +63,7 @@ def route_init(app):
 			grants = complete_update()
 			for grant in grants.keys():
 				text = grant + " " + grants[grant]["Description"]
-				db.save_grant(text, grants[grant]["Post"], grants[grant]["Floor"], grants[grant]["Ceiling"])
+				db.save_grant(generate_grant_keywords(text), grants[grant]["Post"], grants[grant]["Floor"], grants[grant]["Ceiling"], grants[grant]["Close"], grants[grant]["Category"])
 			return render_template('db.html', notification=status)
 		# Seeding the recently added grants
 		requestSeed = request.args.get('seedgrantsdaily')
@@ -72,7 +72,7 @@ def route_init(app):
 			grants = daily_update()
 			for grant in grants.keys():
 				text = grant + " " + grants[grant]["Description"]
-				db.save_grant(text, grants[grant]["Post"], grants[grant]["Floor"], grants[grant]["Ceiling"])
+				db.save_grant(generate_grant_keywords(text), grants[grant]["Post"], grants[grant]["Floor"], grants[grant]["Ceiling"], grants[grant]["Close"], grants[grant]["Category"])
 			return render_template('db.html', notification=status)
 		# Deleting All Grants
 		requestDelete = request.args.get('deletegrants')
@@ -118,9 +118,9 @@ def route_init(app):
 	# Get Clusters
 	@app.route('/clusters/<string:query>')
 	def get_clusters(query):
-		#article_list = db.get_current_search()
-		clusters = []#make_clusters(article_list)
-		#db.save_clusters(clusters) # save clusters to db for later retreval
+		article_list = db.get_current_search()
+		clusters = make_clusters(article_list)
+		db.save_clusters(clusters) # save clusters to db for later retreval
 		# final data should be in form { nodes: [], links: [] }
 		nodes = [{'id': 'root', 'name': query, 'val': 10}]
 		nodes += [{'id': cluster, 'name': cluster, 'val': 5} for cluster in clusters]
@@ -136,8 +136,9 @@ def route_init(app):
 
 	# Grant Analysis
 	@app.route('/grant/<string:query>')
-	def get_grant_analysis(query):
-		floors, ceilings = complete_analysis(db.get_grants(query))
+	def get_grant_analysis(query, categories):
+		## Added the categories which must be a list grant categories
+		floors, ceilings = complete_analysis(db.get_grants(query, categories))
 		return jsonify({'floors': floors, 'ceilings': ceilings})
 
 

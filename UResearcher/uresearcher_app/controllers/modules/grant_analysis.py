@@ -30,6 +30,8 @@ def read_xml(document_name, cutoff_date):
 		ceiling = child.find('{http://apply.grants.gov/system/OpportunityDetail-V1.0}AwardCeiling')							## 1
 		floor = child.find('{http://apply.grants.gov/system/OpportunityDetail-V1.0}AwardFloor')								## 1
 		total = child.find('{http://apply.grants.gov/system/OpportunityDetail-V1.0}EstimatedTotalProgramFunding')			## 1
+		close = child.find('{http://apply.grants.gov/system/OpportunityDetail-V1.0}CloseDate')
+		category = child.find('{http://apply.grants.gov/system/OpportunityDetail-V1.0}OpportunityCategory')
 
 		## Converting post time to unix
 		time = datetime.strptime(post.text, '%m%d%Y')
@@ -42,10 +44,8 @@ def read_xml(document_name, cutoff_date):
 				temp['Description'] = description.text
 			else:
 				temp['Description'] = ""
-			if post != None:
-				temp['Post'] = post.text
-			else:
-				temp['Post'] = None
+			if ceiling != None:
+				temp['Ceiling'] = int(ceiling.text)
 			if ceiling != None:
 				temp['Ceiling'] = int(ceiling.text)
 			else:
@@ -58,6 +58,16 @@ def read_xml(document_name, cutoff_date):
 				temp['Total'] = int(total.text)
 			else:
 				temp['Total'] = 0
+			if close != None:
+				temp['Close'] = (datetime.strptime(close.text, '%m%d%Y')-datetime.min).days
+			else:
+				temp['Close'] = None
+			if category != None:
+				temp['Category'] = category.text
+			else:
+				temp['Category'] = 'Undefined'
+			temp['Post'] = (time-datetime.min).days
+			
 
 			result[title.text] = temp
 
@@ -95,27 +105,35 @@ def complete_update():
 	return grant_update(datetime.min)
 
 
-def get_grant_data_points(list_of_grants):
+def get_grant_data_points(grants):
 
 	result_floor = {}
 	result_ceil = {}
 
 	for grant in list_of_grants:
 		date =  grant["date"]
+		close = grant["close"]
 		floor = grant["floor"]
 		ceil = grant["ceiling"]
 
-		if floor != 0:
+		if close == None:
+			close = date
+
+		while(date <= close):
+
+			
 			if date in result_floor:
 				result_floor[date] += floor
 			elif date != None:
 				result_floor[date] = floor
 
-		if ceil != 0:
+			
 			if date in result_ceil:
 				result_ceil[date] += ceil
 			elif date != None:
 				result_ceil[date] = ceil
+
+			date += 1
 
 	return result_floor, result_ceil
 
@@ -151,10 +169,7 @@ def complete_analysis(data):
 
 ## Executable Definition for Testing
 def main():
-	results = daily_update()
-	for r in results:
-		print()
-		print(r)
+	print((datetime.now()-datetime.min).days)
 
 
 if __name__ == "__main__":
