@@ -110,7 +110,7 @@ def get_grant_data_points(grants):
 	result_floor = {}
 	result_ceil = {}
 
-	for grant in list_of_grants:
+	for grant in grants:
 		date =  grant["date"]
 		close = grant["close"]
 		floor = grant["floor"]

@@ -6,6 +6,7 @@ import Tab from '@material-ui/core/Tab';
 import { Paper, Card, CardContent, Divider, Typography } from "@material-ui/core";
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import ArticleResults from "./articleresults"
 import Cluster from "./cluster"
@@ -158,6 +159,24 @@ class SearchResults extends React.Component {
         let searchPlaceholder = "Search...";
         let enableSearchBar = true;
 
+        const tooltipLinkStyle = {
+              color: "inherit",
+              textDecoration: "inherit", 
+        };
+
+        const articleInstructionLink = "https://github.com/printfer/UResearcher/blob/master/doc/modules/article_search.md"
+        const articleInstructionText = "article article article article <click for more details>"
+        const clusterInstructionLink = "https://github.com/printfer/UResearcher/blob/master/doc/modules/clustering.md"
+        const clusterInstructionText = "This is cluster Instruction This is cluster Instruction This is cluster Instruction This is cluster Instruction This is cluster Instruction This is cluster Instruction <click for more details>"
+        const grantInstructionLink = "https://github.com/printfer/UResearcher/blob/master/doc/modules/grant_analysis.md"
+        const grantInstructionText = "grantInstructionText grantInstructionText grantInstructionText grantInstructionText <click for more details>"
+        const keywordInstructionLink = "https://github.com/printfer/UResearcher/blob/master/doc/modules/keyword_analysis.md"
+        const keywordInstructionText = "keywordInstructionText keywordInstructionText keywordInstructionText keywordInstructionText keywordInstructionText <click for more details>"
+        const latentInstructionLink = "https://github.com/printfer/UResearcher/blob/master/doc/modules/latent_knowledge_analysis.md"
+        const latentInstructionText = "latentInstructionText latentInstructionText latentInstructionText latentInstructionText <click for more details>"
+        const summaryInstructionLink = ""
+        const summaryInstructionText = "summaryInstructionText summaryInstructionText summaryInstructionText summaryInstructionText summaryInstructionText <click for more details>"
+
 
 		return (
 			<div className="container-fluid">
@@ -179,12 +198,48 @@ class SearchResults extends React.Component {
 								textColor="secondary"
 								orientation="vertical"
 							>
-								<Tab icon={<i className="fas fa-list"></i>} label="ARTICLES" />
-								<Tab icon={<i className="fas fa-project-diagram"></i>} label="CLUSTERS" />
-								<Tab icon={<i className="fas fa-money-check-alt"></i>} label="GRANT TRENDS" />
-								<Tab icon={<i className="fas fa-chart-bar"></i>} label="KEYWORD TRENDS" />
-								<Tab icon={<i className="fas fa-brain"></i>} label="LATENT KNOWLEDGE" />
-								<Tab icon={<i className="fas fa-book-reader"></i>} label="SUMMARY" />
+                                <Tooltip title={
+                                    <React.Fragment>
+                                        <a href={articleInstructionLink} style={tooltipLinkStyle} target="_blank">{articleInstructionText}</a>
+                                    </React.Fragment>
+                                    } placement="right" interactive arrow>
+                                    <Tab icon={<i className="fas fa-list"></i>} label="ARTICLES" />
+                                </Tooltip>
+                                <Tooltip title={
+                                    <React.Fragment>
+                                        <a href={clusterInstructionLink} style={tooltipLinkStyle} target="_blank">{clusterInstructionText}</a>
+                                    </React.Fragment>
+                                    } placement="right" interactive arrow>
+                                    <Tab icon={<i className="fas fa-project-diagram"></i>} label="CLUSTERS" />
+                                </Tooltip>
+                                <Tooltip title={
+                                    <React.Fragment>
+                                        <a href={grantInstructionLink} style={tooltipLinkStyle} target="_blank">{grantInstructionText}</a>
+                                    </React.Fragment>
+                                    } placement="right" interactive arrow>
+                                    <Tab icon={<i className="fas fa-money-check-alt"></i>} label="GRANT TRENDS" />
+                                </Tooltip>
+                                <Tooltip title={
+                                    <React.Fragment>
+                                        <a href={keywordInstructionLink} style={tooltipLinkStyle} target="_blank">{keywordInstructionText}</a>
+                                    </React.Fragment>
+                                    } placement="right" interactive arrow>
+                                    <Tab icon={<i className="fas fa-chart-bar"></i>} label="KEYWORD TRENDS" />
+                                </Tooltip>
+                                <Tooltip title={
+                                    <React.Fragment>
+                                        <a href={latentInstructionLink} style={tooltipLinkStyle} target="_blank">{latentInstructionText}</a>
+                                    </React.Fragment>
+                                    } placement="right" interactive arrow>
+                                    <Tab icon={<i className="fas fa-brain"></i>} label="LATENT KNOWLEDGE" />
+                                </Tooltip>
+                                <Tooltip title={
+                                    <React.Fragment>
+                                        <a href={summaryInstructionLink} style={tooltipLinkStyle} target="_blank">{summaryInstructionText}</a>
+                                    </React.Fragment>
+                                    } placement="right" interactive arrow>
+                                    <Tab icon={<i className="fas fa-book-reader"></i>} label="SUMMARY" />
+                                </Tooltip>
 							</Tabs>
 						</Paper>
 					</div>

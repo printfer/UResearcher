@@ -38,9 +38,9 @@ class Grants(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	keywords = db.Column(db.String(255), nullable = False)
 	date = db.Column(db.Integer, nullable = False)
-	close = db.Column(db.Integer, nullable = True)
 	floor = db.Column(db.Integer, nullable = True)
 	ceiling = db.Column(db.Integer, nullable = True)
+	close = db.Column(db.Integer, nullable = True)
 	category = db.Column(db.String(255), nullable=True)
 
 # init database

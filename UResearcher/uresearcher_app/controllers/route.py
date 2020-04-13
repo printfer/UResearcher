@@ -63,7 +63,9 @@ def route_init(app):
 			grants = complete_update()
 			for grant in grants.keys():
 				text = grant + " " + grants[grant]["Description"]
-				db.save_grant(generate_grant_keywords(text), grants[grant]["Post"], grants[grant]["Floor"], grants[grant]["Ceiling"], grants[grant]["Close"], grants[grant]["Category"])
+				separator = ","
+				keys = separator.join(generate_grant_keywords(text))
+				db.save_grant(keys, grants[grant]["Post"], grants[grant]["Floor"], grants[grant]["Ceiling"], grants[grant]["Close"], grants[grant]["Category"])
 			return render_template('db.html', notification=status)
 		# Seeding the recently added grants
 		requestSeed = request.args.get('seedgrantsdaily')
@@ -72,7 +74,9 @@ def route_init(app):
 			grants = daily_update()
 			for grant in grants.keys():
 				text = grant + " " + grants[grant]["Description"]
-				db.save_grant(generate_grant_keywords(text), grants[grant]["Post"], grants[grant]["Floor"], grants[grant]["Ceiling"], grants[grant]["Close"], grants[grant]["Category"])
+				separator = ","
+				keys = separator.join(generate_grant_keywords(text))
+				db.save_grant(keys, grants[grant]["Post"], grants[grant]["Floor"], grants[grant]["Ceiling"], grants[grant]["Close"], grants[grant]["Category"])
 			return render_template('db.html', notification=status)
 		# Deleting All Grants
 		requestDelete = request.args.get('deletegrants')
@@ -136,8 +140,9 @@ def route_init(app):
 
 	# Grant Analysis
 	@app.route('/grant/<string:query>')
-	def get_grant_analysis(query, categories):
+	def get_grant_analysis(query):
 		## Added the categories which must be a list grant categories
+		categories = ["Undefined", "M", "D", "E", "C"]
 		floors, ceilings = complete_analysis(db.get_grants(query, categories))
 		return jsonify({'floors': floors, 'ceilings': ceilings})
 
