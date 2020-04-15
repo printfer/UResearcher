@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import Markdown from 'react-markdown'
 
 import Menu from "./menu"
 
@@ -7,8 +8,19 @@ import Menu from "./menu"
 class About extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {data: ""}
     }
 
+    getReadme(){
+        fetch("//raw.githubusercontent.com/printfer/UResearcher/master/README.md")
+            .then((r) => r.text())
+            .then(text  => {
+                this.setState({data: text,})
+            })  
+    } 
+    componentDidMount(){
+        this.getReadme();
+    }
 
     render() {
 
@@ -20,31 +32,8 @@ class About extends React.Component {
 
                 {/* Content */}
                 <div className="container">
-                    <div className="row">
-                        <div className="col">
-                            <h1 className="h1 mt-5 text-center ">About</h1>
-                            <p>UResearcher is an invaluable application for researchers to reduce unnecessary searching while providing worthwhileoutlets. Some basic functions of UResearcher are organizing topics, Identifies knowledge using Latent KnowledgeAnalysis and other machine learning techniques to finding missing information, Analyzes and predicts trends for fruitfulresearch opportunities.</p>
-                        </div>
-                    </div>
-
-                    <div className="row">
-                        <div className="col">
-                            <h1 className="h3">Github</h1>
-                        </div>
-                    </div>
-
-                    <div className="row">
-                        <div className="col">
-                            <h1 className="h3">Q&A</h1>
-                        </div>
-                    </div>
-
-                    <div className="row">
-                        <div className="col">
-                            <h1 className="h3">Feedback</h1>
-                        </div>
-                    </div>
-
+                    <h1>About</h1>
+                    <Markdown source={this.state.data}/>
                 </div>
 
             </div>

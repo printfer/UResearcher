@@ -39,3 +39,15 @@ class Grants(db.Model):
 	floor = db.Column(db.Integer, nullable = True)
 	ceiling = db.Column(db.Integer, nullable = True)
 	category = db.Column(db.String(255), nullable=True)
+
+class Citations(db.Model):
+	id = db.Column(db.String(1250), primary_key=True)
+	citations = db.Column(db.String(1250), nullable = True)
+	citation_dates = db.Column(db.String(1250), nullable = True)
+	references = db.Column(db.String(1250), nullable = True)
+	reference_dates = db.Column(db.String(1250), nullable = True)
+
+class Feedback(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	title = db.Column(db.String(255), nullable=False)
+	comment = db.Column(db.String(255), nullable=False)

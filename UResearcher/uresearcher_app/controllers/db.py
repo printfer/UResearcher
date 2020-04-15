@@ -43,6 +43,18 @@ class Grants(db.Model):
 	close = db.Column(db.Integer, nullable = True)
 	category = db.Column(db.String(255), nullable=True)
 
+class Citations(db.Model):
+	id = db.Column(db.String(1250), primary_key=True)
+	citations = db.Column(db.String(1250), nullable = True)
+	citation_dates = db.Column(db.String(1250), nullable = True)
+	references = db.Column(db.String(1250), nullable = True)
+	reference_dates = db.Column(db.String(1250), nullable = True)
+
+class Feedback(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	title = db.Column(db.String(255), nullable=False)
+	comment = db.Column(db.String(255), nullable=False)
+
 # init database
 def db_init(app):
 	global db
@@ -72,7 +84,9 @@ def db_delete():
 def search_articles(query):
 	# query our elasticsearch database
 	# size parameter is the maximum number of articles to be returned, using 100 for testing purposes
-	articles = es.search(index='test_index', size='100', body={'query': {'match': {'title': query}}}, sort="publish_date:desc")
+	print(query)
+	articles = es.search(index='test_index', size='10000', q=query, sort="publish_date:desc", default_operator="AND")
+	# articles = es.search(index='test_index', size='100', body={'query': {'match': {'title': query}}}, sort="publish_date:desc")
 	# convert the returned object to the appropriate form
 	articles = articles['hits']['hits']
 	return_articles = [article['_source'] for article in articles]
@@ -150,3 +164,45 @@ def delete_all_grants():
 	db.session.commit()
 	status = "Grant database deleted successfully!"
 	return status
+
+
+def save_citation(DOI, citations, citation_dates, references, reference_dates):
+	new_citation = Citations(id= DOI, citations = citations, citation_dates= citation_dates, references= references, reference_dates=reference_dates)
+	db.session.add(new_citation)
+	db.session.commit()
+	
+def save_bulk_citations(tuplelist):
+	
+	new_citation_list = []
+	
+	for val in tuplelist:
+		new_citation_list.append(Citations(id=val[0],citations=val[1], citation_dates=val[2],references=val[3], reference_dates=val[4]))
+	
+
+	db.session.add_all(new_citation_list)
+	db.session.commit()
+	
+def get_citation(DOI):
+	entry = Citations.query.filter_by(id=DOI).all()
+	return entry
+
+def delete_all_citations():
+	db.session.query(Citations).delete()
+	db.session.commit()
+	status = "Citation database deleted successfully!"
+	return status
+
+def save_feedback(title, contents):
+	new_feedback = Feedback(title = title, comment = contents)
+	db.session.add(new_feedback)
+	db.session.commit()
+
+def get_feedback():
+	feedback = Feedback.query.all()
+	results = []
+	for val in feedback:
+		temp = []
+		temp.append(val.title)
+		temp.append(val.comment)
+		results.append(temp)
+	return results

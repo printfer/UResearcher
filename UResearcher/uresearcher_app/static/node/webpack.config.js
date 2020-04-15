@@ -8,7 +8,9 @@ const config = {
 		searchresults: __dirname + '/components/searchresults.jsx',
 		index: __dirname + '/components/index.jsx',
 		about: __dirname + '/components/about.jsx',
+		doc: __dirname + '/components/doc.jsx',
 		settings: __dirname + '/components/settings.jsx',
+		landingpage: __dirname + '/components/landingpage.jsx',
 	},
 	output: {
         path: __dirname + '/dist',

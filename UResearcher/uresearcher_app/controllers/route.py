@@ -3,12 +3,14 @@ from flask import (jsonify, make_response, redirect,
 from flask_restful import Api, Resource
 from . import db
 
+from .modules.citation_compiler import compile_doi, get_citation_data
 from .modules.clustering import make_clusters
 from .modules.grant_analysis import complete_analysis, complete_update, daily_update
-from .modules.keyword_analysis import get_keywords, generate_grant_keywords#, generate_new_keywords, generate_grant_keywords
+from .modules.keyword_analysis import get_keywords, generate_grant_keywords
 from .modules.latent_knowledge_analysis import get_2d_projection, get_cosine_list, get_phrase_connections, get_analogy_list
 from .modules.citation_analysis import citation_count_query
 from .modules.summarization import summarize_articles
+import datetime
 
 
 def route_init(app):
@@ -27,6 +29,11 @@ def route_init(app):
 	def about():
 		return render_template('about.html')
 
+	# Doc Page
+	@app.route('/doc')
+	def doc():
+		return render_template('doc.html')
+
 	# Help Page
 	@app.route('/settings')
 	def help():
@@ -37,6 +44,11 @@ def route_init(app):
 	def feedback():
 		return render_template('feedback.html')
 
+
+	# Landing Page
+	@app.route('/landingpage')
+	def landingpage():
+		return render_template('landingpage.html')
 
 	#############################
 	## Datebase Page Routing 
@@ -66,7 +78,7 @@ def route_init(app):
 				separator = ","
 				keys = separator.join(generate_grant_keywords(text))
 				db.save_grant(keys, grants[grant]["Post"], grants[grant]["Floor"], grants[grant]["Ceiling"], grants[grant]["Close"], grants[grant]["Category"])
-			return render_template('db.html', notification=status)
+			return render_template('db.html', notification="Seeded All")
 		# Seeding the recently added grants
 		requestSeed = request.args.get('seedgrantsdaily')
 		requestSeed = str(requestSeed).lower()
@@ -77,14 +89,63 @@ def route_init(app):
 				separator = ","
 				keys = separator.join(generate_grant_keywords(text))
 				db.save_grant(keys, grants[grant]["Post"], grants[grant]["Floor"], grants[grant]["Ceiling"], grants[grant]["Close"], grants[grant]["Category"])
-			return render_template('db.html', notification=status)
+			return render_template('db.html', notification="Seeded Recent Additions")
 		# Deleting All Grants
 		requestDelete = request.args.get('deletegrants')
 		requestDelete = str(requestDelete).lower()
 		if(requestDelete == 'true'):
 			status = db.delete_all_grants()
 			return render_template('db.html', notification=status)
+		# Seed Citations
+		requestSeed = request.args.get('seedcitations')
+		requestSeed = str(requestSeed).lower()
+		if(requestSeed == 'true'):
+			#These two calls take quite a while.
+			dois = compile_doi()
+			citationdata = get_citation_data(dois)	
+			valcount = 0
+			tuplelist = []
+			for key, val in citationdata.items():
+				
+				
+				tempdoi = val.doi
+				
+				if val.references:
+					temprefs = ','.join(str(x) for x in val.references)
+					temprefdate = ','.join(str(x) for x in val.referencesdate)
+				else:
+					temprefs = ""
+					temprefdate = ""
+				if val.citedby:
+					tempcites = ','.join(str(x) for x in val.citedby)
+					tempcitedate = ','.join(str(x) for x in val.citedbydate)
+				else:
+					tempcites = ""
+					tempcitedate = ""
+				
+				valcount = valcount + 1
+				tuplelist.append((tempdoi, tempcites, tempcitedate, temprefs, temprefdate))
+				
+				#db.save_citation(tempdoi, tempcites, tempcitedate, temprefs, temprefdate)
+				if valcount == 10000:
+					db.save_bulk_citations(tuplelist)
+					tuplelist = []
+					valcount = 0
+			
+			if valcount != 0:
+				db.save_bulk_citations(tuplelist)
+
+			
+			return render_template('db.html', notification="Seeded All")
+		# Delete Citations
+		requestDelete = request.args.get('deletecitations')
+		requestDelete = str(requestDelete).lower()
+		if(requestDelete == 'true'):
+			status = db.delete_all_citations()
+			return render_template('db.html', notification=status)
+
 		return render_template('db.html')
+
 
 	#############################
 	## Search Page Routing 
@@ -95,6 +156,23 @@ def route_init(app):
 	def search():
 		query = request.args.get('query')
 		return render_template('search_results.html', title='Search')
+
+	# gets the tab the user was previously on
+	# i.e. a new search from the clusters tab will return to the clusters tab
+	@app.route('/get_tab')
+	def get_tab():
+		# print('get tab: ', session['current_tab'])
+		if 'current_tab' in session:
+			tab = session['current_tab']
+		else:
+			tab = 0
+		return jsonify({'tab': tab})
+
+	@app.route('/set_tab/<int:tab>')
+	def set_tab(tab):
+		# print('set tab: ', tab)
+		session['current_tab'] = tab
+		return jsonify('success')
 
 	# # Clustering Direct Route
 	# @app.route('/clustering')
@@ -118,6 +196,12 @@ def route_init(app):
 		article_list = db.search_articles(query)
 		db.save_current_search(article_list)
 		return jsonify({'article_list': article_list})
+
+	# Citation Information
+	@app.route('/citation/<string:doi>')
+	def citation_info(doi):
+		temp = db.get_citation(doi)
+		return jsonify(temp)
 
 	# Get Clusters
 	@app.route('/clusters/<string:query>')
@@ -143,8 +227,11 @@ def route_init(app):
 	def get_grant_analysis(query):
 		## Added the categories which must be a list grant categories
 		categories = ["Undefined", "M", "D", "E", "C"]
-		floors, ceilings = complete_analysis(db.get_grants(query, categories))
-		return jsonify({'floors': floors, 'ceilings': ceilings})
+		floors, ceilings, labels = complete_analysis(db.get_grants(query, categories))
+		## Creating labels
+		for val in range(len(labels)):
+			labels[val] =  (datetime.datetime.min + datetime.timedelta(days=labels[val])).utcnow()
+		return jsonify({'floors': floors, 'ceilings': ceilings, 'labels': labels})
 
 
 	# Keyword Analysis

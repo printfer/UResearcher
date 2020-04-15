@@ -15,21 +15,21 @@ from zipfile import *
 
 def read_xml(document_name, cutoff_date):
 	## Opening and analyzing the xml file
-	Grant_Tree = ET.parse(document_name)																					## 1
-	root = Grant_Tree.getroot()																								## 1
+	Grant_Tree = ET.parse(document_name)																					
+	root = Grant_Tree.getroot()																								
 
 	## Iterating over points with relevant tags
 	result = {}					
-	for child in root.findall('{http://apply.grants.gov/system/OpportunityDetail-V1.0}OpportunitySynopsisDetail_1_0'):		## 1
+	for child in root.findall('{http://apply.grants.gov/system/OpportunityDetail-V1.0}OpportunitySynopsisDetail_1_0'):		
 		
 		## Fetching information
 		temp = {}
-		title = child.find('{http://apply.grants.gov/system/OpportunityDetail-V1.0}OpportunityTitle')						## 1
-		post = child.find('{http://apply.grants.gov/system/OpportunityDetail-V1.0}PostDate')  						 		## 1
-		description = child.find('{http://apply.grants.gov/system/OpportunityDetail-V1.0}Description')						## 1
-		ceiling = child.find('{http://apply.grants.gov/system/OpportunityDetail-V1.0}AwardCeiling')							## 1
-		floor = child.find('{http://apply.grants.gov/system/OpportunityDetail-V1.0}AwardFloor')								## 1
-		total = child.find('{http://apply.grants.gov/system/OpportunityDetail-V1.0}EstimatedTotalProgramFunding')			## 1
+		title = child.find('{http://apply.grants.gov/system/OpportunityDetail-V1.0}OpportunityTitle')						
+		post = child.find('{http://apply.grants.gov/system/OpportunityDetail-V1.0}PostDate')  						 		
+		description = child.find('{http://apply.grants.gov/system/OpportunityDetail-V1.0}Description')						
+		ceiling = child.find('{http://apply.grants.gov/system/OpportunityDetail-V1.0}AwardCeiling')							
+		floor = child.find('{http://apply.grants.gov/system/OpportunityDetail-V1.0}AwardFloor')								
+		total = child.find('{http://apply.grants.gov/system/OpportunityDetail-V1.0}EstimatedTotalProgramFunding')			
 		close = child.find('{http://apply.grants.gov/system/OpportunityDetail-V1.0}CloseDate')
 		category = child.find('{http://apply.grants.gov/system/OpportunityDetail-V1.0}OpportunityCategory')
 
@@ -160,27 +160,15 @@ def complete_analysis(data):
 	ret_floors = sorted(ret_floors, key = sort_by_date_key)
 	ret_ceils = sorted(ret_ceils, key = sort_by_date_key)
 
+	## Getting labels
+	labels = [];
+	for x in ret_floors:
+		labels.append(x[0])
+
 	## FINAL RETURN TYPE NEEDS TO BE IN THIS FORMAT
 	ret_floors = [{'x': p[0], 'y': p[1]} for p in ret_floors]
 	ret_ceils = [{'x': p[0], 'y': p[1]} for p in ret_ceils]
 
-	return ret_floors, ret_ceils
 
 
-## Executable Definition for Testing
-def main():
-	print((datetime.now()-datetime.min).days)
-
-
-if __name__ == "__main__":
-    main()
-
-## Citations:
-##
-## 	1. https://docs.python.org/2/library/xml.etree.elementtree.html
-##
-##     Date Accessed: 1/16/20
-##
-##  2. https://stackabuse.com/download-files-with-python/
-##
-##	   Date Accessed: 2/11/20
+	return ret_floors, ret_ceils, labels

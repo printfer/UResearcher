@@ -33,5 +33,5 @@ to run it, type:
 ## Developer Guide
 
 - [Front-end Setup](uresearcher_app/static/node/one-time-setup.txt)
-- [Research Database Access Support](uresearcher_app/supports)
+- [Research Database Access Support](uresearcher_app/supports) ([DataBase Controller Link](uresearcher_app/controllers/db.py))
 - [UResearcher Function Modules](uresearcher_app/controllers/modules)

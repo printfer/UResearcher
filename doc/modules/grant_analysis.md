@@ -1,5 +1,5 @@
 Author: Christopher Allan Liu
-Updated by: 1/24/2020
+Updated by: 4/15/2020
 
 
 File Location: ureasercher_app/modules/grant_anlysis.py
@@ -126,10 +126,16 @@ that are currently on the grants.gov website.
 Return Example: {"Research" : {"Description" : "This is a grant.", "Post" : "01012020", "Ceiling" : 10000 , "Floor" : 1000 , "Total" : 50000}}
 
 
-
-
 Citations:
 
  	1. https://docs.python.org/2/library/xml.etree.elementtree.html
 
     Date Accessed: 1/16/20
+
+    Lines: 16-74
+
+    2. https://stackabuse.com/download-files-with-python/
+
+	Date Accessed: 2/11/20
+
+	Lines: 79-83

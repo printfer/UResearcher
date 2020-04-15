@@ -1,6 +1,7 @@
 import csv
 import os
 import shutil
+import json
 
 #Michael Tata
 #3/17/2020
@@ -52,16 +53,25 @@ class CitationCompiler:
 	#So all doi present in the database
 	def compile_citation_csv(self, doi_list):
 		
+		
+		
 		#Only save citation information for articles with DOI's that we have. 
 		for val in doi_list:
 			self.citations[val] = CitationInfo(val)
+			
 		
-
+		#endearly = 0
+		#endpoint = 2
+		
 		totalcount = 0
 		totalfound = 0
 	
 		for subdir, dirs, files in os.walk(self.directory):
 			for file in files:
+				
+				#if endearly >= endpoint:
+				#	break
+			
 				if file.endswith(".csv"):
 					print("\nOpening file ", file)
 					csvfile = open(os.path.join(subdir, file), encoding='utf-8', errors='ignore')
@@ -110,6 +120,7 @@ class CitationCompiler:
 			
 				totalcount = totalcount + rowcount
 				totalfound = totalfound + foundcount 
+				#endearly = endearly + 1
 		
 		#print("TOTAL ROWS PARSED:", totalcount)
 		print("TOTAL MATCH COUNT:", totalfound)
@@ -126,8 +137,10 @@ class CitationCompiler:
 # Returns a dictionary where the key is the DOI(string), and the value is a CitationInfo Object. 
 def get_citation_data(doidata):
 	
-	filepath = "./"
+	#filepath = "./" 
+	filepath = "E:/CAPSTONE STUFF" #Michaels local directory for opencitation data
 	
+	#print("DIRECTORY STUFF:", os.listdir(filepath))
 	cc = CitationCompiler(filepath)
 	
 	cc.compile_citation_csv(doidata)
@@ -135,7 +148,6 @@ def get_citation_data(doidata):
 	return cc.citations
 
 
-	
 #
 #Testing Space
 #
@@ -158,5 +170,28 @@ def get_citation_data(doidata):
 	
 #			print("\nREFERENCE COUNT:", len(val.references))
 #			print("CITED BY COUNT:", len(val.citedby))
+
+
+def compile_doi():
+
+	doilist = []
+
+	print("In compile doi")
+	for i in range(1, 45):
+		print("In portion:", i)
+		with open('uresearcher_app/supports/doaj_article_data/article_batch_' + str(i) + '.json') as articles:
+			data = json.load(articles)
+			for trow in data:
+				row = trow['bibjson']
+				for identifier in row['identifier']:
+					if identifier['type'] == 'doi':
+						if 'id' in identifier:
+							doi = identifier['id']
+							doilist.append(doi)
+						
+							
+							
+
+	return doilist
 
 

@@ -3,8 +3,7 @@ import ReactDOM from "react-dom";
 
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import { Paper, Card, CardContent, Divider, Typography } from "@material-ui/core";
-import Breadcrumbs from '@material-ui/core/Breadcrumbs';
+import Paper from "@material-ui/core/Paper";
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import Tooltip from '@material-ui/core/Tooltip';
 
@@ -42,10 +41,20 @@ class SearchResults extends React.Component {
 
     getQuery() {
 		let query = window.location.search.substr(7);
+		query = decodeURI(query);
         return query;
     }
 
 	componentDidMount() {
+		// does an ajax call to get the selected tab from a previous search
+		fetch("/get_tab")
+			.then(res => res.json())
+			.then((result) => {
+				this.setState({
+					selectedTab: result['tab'],
+				});
+			});
+
 		// does an ajax call to get the articles using the query in the url
 		var query = window.location.search.substr(7);
 		fetch("/search/" + query)
@@ -153,9 +162,14 @@ class SearchResults extends React.Component {
 			});
 	}
 
+	changeTab(newTab) {
+		this.setState({selectedTab: newTab});
+		fetch("/set_tab/" + newTab);
+	}
+
 
 	render() {
-        let searchValue = this.getQuery().replace(/%20/g, ' ');
+        let searchValue = this.getQuery();
         let searchPlaceholder = "Search...";
         let enableSearchBar = true;
 
@@ -164,18 +178,19 @@ class SearchResults extends React.Component {
               textDecoration: "inherit", 
         };
 
+        const instructionHintText = " <click the text for more details>"
         const articleInstructionLink = "https://github.com/printfer/UResearcher/blob/master/doc/modules/article_search.md"
-        const articleInstructionText = "article article article article <click for more details>"
+        const articleInstructionText = "Access the article results of the search" + instructionHintText
         const clusterInstructionLink = "https://github.com/printfer/UResearcher/blob/master/doc/modules/clustering.md"
-        const clusterInstructionText = "This is cluster Instruction This is cluster Instruction This is cluster Instruction This is cluster Instruction This is cluster Instruction This is cluster Instruction <click for more details>"
+        const clusterInstructionText = "Examine the clustered labels of the search results" + instructionHintText
         const grantInstructionLink = "https://github.com/printfer/UResearcher/blob/master/doc/modules/grant_analysis.md"
-        const grantInstructionText = "grantInstructionText grantInstructionText grantInstructionText grantInstructionText <click for more details>"
+        const grantInstructionText = "Observe the line graph of grant funding relating to the search" + instructionHintText
         const keywordInstructionLink = "https://github.com/printfer/UResearcher/blob/master/doc/modules/keyword_analysis.md"
-        const keywordInstructionText = "keywordInstructionText keywordInstructionText keywordInstructionText keywordInstructionText keywordInstructionText <click for more details>"
+        const keywordInstructionText = "Access the keyword frequency graph from the search" + instructionHintText
         const latentInstructionLink = "https://github.com/printfer/UResearcher/blob/master/doc/modules/latent_knowledge_analysis.md"
-        const latentInstructionText = "latentInstructionText latentInstructionText latentInstructionText latentInstructionText <click for more details>"
+        const latentInstructionText = "View phrase connections and word relations within the results page" + instructionHintText
         const summaryInstructionLink = ""
-        const summaryInstructionText = "summaryInstructionText summaryInstructionText summaryInstructionText summaryInstructionText summaryInstructionText <click for more details>"
+        const summaryInstructionText = "Examine an auto-generated summary created from the search results" + instructionHintText
 
 
 		return (
@@ -192,7 +207,7 @@ class SearchResults extends React.Component {
 						<Paper style={{ height: "calc(100vh - 4.5rem)", position: "relative" }}>
 							<Tabs
 								value={this.state.selectedTab}
-								onChange={(event, newValue) => this.setState({ selectedTab: newValue })}
+								onChange={(event, newValue) => this.changeTab(newValue)}
 								variant="fullWidth"
 								indicatorColor="secondary"
 								textColor="secondary"

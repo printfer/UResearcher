@@ -26,13 +26,6 @@ class Settings extends React.Component {
                             <h1 className="h1 mt-5 text-center ">Settings</h1>
                         </div>
                     </div>
-
-                    <div className="row">
-                        <div className="col">
-                            <h1 className="h3"><a href="/db">Database Manager</a></h1>
-                        </div>
-                    </div>
-
                 </div>
 
 
