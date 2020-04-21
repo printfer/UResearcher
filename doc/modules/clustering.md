@@ -1,3 +1,19 @@
+# Using The Clusters
+
+1. Examining Clusters
+	*After a successful search, click on the “Clusters” side panel.
+	![][https://github.com/printfer/UResearcher/blob/master/doc/modules/images/clustering1.png]
+	*Wait for The Clustering To load from the Search
+	![][https://github.com/printfer/UResearcher/blob/master/doc/modules/images/clustering2.png]
+	*Click on a cluster to begin a search with the cluster key word within the established search results.
+
+2. Meaning of A Cluster
+	*The clusters of this web application represent the commonly categorized topics within the searched field.
+	*For example, given the search “acid rain effects on concrete lifespan,” the program determines that all papers within this topic can be categorized into “china,” “background,” “nitrite,” “production,” and “questions.”
+	*Clicking on a cluster will create a search within both the original search and the chosen cluster topic.
+
+# Developer Documentation -
+
 # Clustering
 
 *  ### readFromListToIgnore()
