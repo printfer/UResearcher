@@ -1,3 +1,21 @@
+# Using Grant Analysis
+
+1. Examine Graphs of Grants
+    * Click on the “Grant Trends” side panel.
+    
+    <img src="images/grants1.png" width="1838" height="875"/>
+    
+    * Wait for the graphs to load.
+    
+    <img src="images/grants2.png" width="1838" height="875"/>
+    
+2. Interpreting the Graph
+    * The graph consists of grant allocations from “grants.gov.”
+    * Each data point represents the sum of grant values for either the floor or ceiling at a point in time.
+    * The x-axis measures time; while, the y-axis measures the award response in millions of dollars.
+
+# Developer Documentation -
+
 Author: Christopher Allan Liu
 Updated by: 4/15/2020
 
