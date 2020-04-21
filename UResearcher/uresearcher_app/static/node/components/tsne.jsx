@@ -13,12 +13,19 @@ import CheckBoxIcon from '@material-ui/icons/CheckBox';
 export default class TSNE extends React.Component {
 	constructor(props) {
 		super(props);
-		
+
 		this.state = {
 			hoverValue: false,
 			hoverLabel: "",
 			value: "",
 			searchedValues: []
+		}
+	}
+
+	componentDidUpdate(prevProps) {
+		// reset searched words when base values change
+		if (this.props.data !== prevProps.data) {
+			this.setState({ searchedValues: [] });
 		}
 	}
 
@@ -28,9 +35,9 @@ export default class TSNE extends React.Component {
 		// maps words to a list of indices in this.props.labels
 		words = words.map((word) => this.props.labels.indexOf(word));
 		// final conversion of word into 2d coordinates from this.props.data
-		words = words.map((w, i) => this.props.data[i]);
+		words = words.map((w) => this.props.data[w]);
 
-		this.setState({searchedValues: words});
+		this.setState({ searchedValues: words });
 	}
 
 	render() {
@@ -39,12 +46,12 @@ export default class TSNE extends React.Component {
 				<Loading show={!this.props.tsneLoaded} />
 				<div className={this.props.tsneLoaded ? "d-flex flex-column justify-content-center" : "hidden"}>
 					<Card className="mb-3">
-						<XYPlot height={500} width={1000} onMouseLeave={() => this.setState({hoverValue: false})}>
-							<MarkSeries 
+						<XYPlot height={500} width={1000} onMouseLeave={() => this.setState({ hoverValue: false })}>
+							<MarkSeries
 								data={this.props.data}
-								onNearestXY={(val, info) => this.setState({hoverValue: val, hoverLabel: this.props.labels[info['index']]})}
+								onNearestXY={(val, info) => this.setState({ hoverValue: val, hoverLabel: this.props.labels[info['index']] })}
 							/>
-							<MarkSeries 
+							<MarkSeries
 								color="orange"
 								data={this.state.searchedValues}
 							/>
@@ -63,18 +70,18 @@ export default class TSNE extends React.Component {
 									multiple
 									disableCloseOnSelect
 									onInputChange={(event, val) => this.setState({ value: val })}
-									options={this.props.labels}
+									options={this.props.labels.sort()}
 									renderOption={(option, { selected }) => (
 										<React.Fragment>
-										  <Checkbox
-											icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
-											checkedIcon={<CheckBoxIcon fontSize="small" />}
-											style={{ marginRight: 8 }}
-											checked={selected}
-										  />
-										  {option}
+											<Checkbox
+												icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
+												checkedIcon={<CheckBoxIcon fontSize="small" />}
+												style={{ marginRight: 8 }}
+												checked={selected}
+											/>
+											{option}
 										</React.Fragment>
-									  )}
+									)}
 									renderInput={params => (
 										<TextField {...params} label="Target Word(s)" margin="normal" variant="outlined" fullWidth />
 									)}
@@ -84,7 +91,7 @@ export default class TSNE extends React.Component {
 						</CardContent>
 					</Card>
 				</div>
-				
+
 				{/* <div className="card">
 					<div className="card-body">
 						This is a 2D projection of all the most important words found in your search results. Mouse over the graph to see which ones share similar contexts.

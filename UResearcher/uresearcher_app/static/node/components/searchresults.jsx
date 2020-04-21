@@ -74,6 +74,7 @@ class SearchResults extends React.Component {
 	selectCluster(cluster) {
 		// move the user back to the article results
 		this.setState({ selectedTab: 0, articlesLoaded: false });
+		fetch("/set_tab/" + "0");
 		// update breadcrumbs
 		this.state.breadcrumbs.push(cluster);
 		// fetch articles for selected cluster
@@ -107,10 +108,18 @@ class SearchResults extends React.Component {
 		fetch("/clusters/" + cluster)
 			.then(res => res.json())
 			.then((result) => {
-				this.setState({
-					clusters: result['clusters'],
-					clustersLoaded: true
-				});
+				if ('clusters' in result) {
+					this.setState({
+						clusters: result['clusters'],
+						clustersLoaded: true
+					});
+				}
+				else {
+					this.setState({
+						clusters: "Insufficient number of articles.",
+						clustersLoaded: true
+					});
+				}
 			});
 	}
 
@@ -180,7 +189,7 @@ class SearchResults extends React.Component {
 
         const instructionHintText = " <click the text for more details>"
         const articleInstructionLink = "https://github.com/printfer/UResearcher/blob/master/doc/modules/article_search.md"
-        const articleInstructionText = "Access the article results of the search" + instructionHintText
+        const articleInstructionText = "Access the article results of the search"
         const clusterInstructionLink = "https://github.com/printfer/UResearcher/blob/master/doc/modules/clustering.md"
         const clusterInstructionText = "Examine the clustered labels of the search results" + instructionHintText
         const grantInstructionLink = "https://github.com/printfer/UResearcher/blob/master/doc/modules/grant_analysis.md"
@@ -190,7 +199,7 @@ class SearchResults extends React.Component {
         const latentInstructionLink = "https://github.com/printfer/UResearcher/blob/master/doc/modules/latent_knowledge_analysis.md"
         const latentInstructionText = "View phrase connections and word relations within the results page" + instructionHintText
         const summaryInstructionLink = ""
-        const summaryInstructionText = "Examine an auto-generated summary created from the search results" + instructionHintText
+        const summaryInstructionText = "Examine an auto-generated summary created from the search results" 
 
 
 		return (
@@ -215,7 +224,7 @@ class SearchResults extends React.Component {
 							>
                                 <Tooltip title={
                                     <React.Fragment>
-                                        <a href={articleInstructionLink} style={tooltipLinkStyle} target="_blank">{articleInstructionText}</a>
+                                        <a style={tooltipLinkStyle} target="_blank">{articleInstructionText}</a>
                                     </React.Fragment>
                                     } placement="right" interactive arrow>
                                     <Tab icon={<i className="fas fa-list"></i>} label="ARTICLES" />
@@ -250,7 +259,7 @@ class SearchResults extends React.Component {
                                 </Tooltip>
                                 <Tooltip title={
                                     <React.Fragment>
-                                        <a href={summaryInstructionLink} style={tooltipLinkStyle} target="_blank">{summaryInstructionText}</a>
+                                        <a style={tooltipLinkStyle} target="_blank">{summaryInstructionText}</a>
                                     </React.Fragment>
                                     } placement="right" interactive arrow>
                                     <Tab icon={<i className="fas fa-book-reader"></i>} label="SUMMARY" />

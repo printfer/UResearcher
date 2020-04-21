@@ -3,11 +3,19 @@ from gensim.test.utils import common_texts
 from sklearn.manifold import TSNE
 from nltk import tokenize
 from .preprocessing import sentence_parsing
+#from flask import jsonify
+
 import multiprocessing
 import time
 
 ## Aside from using the abstract/fulltext of an article, we need to split them into sentences before splitting into words
 def get_wordvecs(articles):
+
+
+	#if len(articles) < 10:
+	#	print("\n\nLKA CHECKED")
+	#	return jsonify('Not enough articles available to train the model')
+
 
 	cores = multiprocessing.cpu_count()
 	sentences = []

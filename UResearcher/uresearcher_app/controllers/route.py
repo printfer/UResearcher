@@ -55,19 +55,6 @@ def route_init(app):
 	#############################
 	@app.route('/db')
 	def db_page():
-		## These first two methods are obsolete
-		# # seed db
-		# requestSeed = request.args.get('seed')
-		# requestSeed = str(requestSeed).lower()
-		# if(requestSeed == 'true'):
-		# 	status = db.db_seed()
-		# 	return render_template('db.html', notification=status)
-		# # delete db
-		# requestDelete = request.args.get('delete')
-		# requestDelete = str(requestDelete).lower()
-		# if(requestDelete == 'true'):
-		# 	status = db.db_delete()
-		# 	return render_template('db.html', notification=status)
 		# Seeding All Grants
 		requestSeed = request.args.get('seedgrantsall')
 		requestSeed = str(requestSeed).lower()
@@ -161,7 +148,6 @@ def route_init(app):
 	# i.e. a new search from the clusters tab will return to the clusters tab
 	@app.route('/get_tab')
 	def get_tab():
-		# print('get tab: ', session['current_tab'])
 		if 'current_tab' in session:
 			tab = session['current_tab']
 		else:
@@ -170,22 +156,8 @@ def route_init(app):
 
 	@app.route('/set_tab/<int:tab>')
 	def set_tab(tab):
-		# print('set tab: ', tab)
 		session['current_tab'] = tab
 		return jsonify('success')
-
-	# # Clustering Direct Route
-	# @app.route('/clustering')
-	# def cluster_direct():
-	# 	query = request.args.get('query')
-	# 	return render_template('search_results.html', query=query, active='cluster')
-
-	# # LKA Direct Route
-	# @app.route('/lka')
-	# def lka_direct():
-	# 	query = request.args.get('query')
-	# 	return render_template('search_results.html', query=query, active='lka')
-
 
 
 	## AJAX methods for react
@@ -200,20 +172,27 @@ def route_init(app):
 	# Citation Information
 	@app.route('/citation/<string:doi>')
 	def citation_info(doi):
+		doi = doi.replace('_', '/')
 		temp = db.get_citation(doi)
-		return jsonify(temp)
+		if temp == None:
+			return jsonify({'citations': ''})
+		else:
+			return jsonify({'citations': temp['citations']})
 
 	# Get Clusters
 	@app.route('/clusters/<string:query>')
 	def get_clusters(query):
-		article_list = db.get_current_search()
-		clusters = make_clusters(article_list)
-		db.save_clusters(clusters) # save clusters to db for later retreval
-		# final data should be in form { nodes: [], links: [] }
-		nodes = [{'id': 'root', 'name': query, 'val': 10}]
-		nodes += [{'id': cluster, 'name': cluster, 'val': 5} for cluster in clusters]
-		links = [{'source': 'root', 'target': node['id']} for node in nodes[1:]]
-		return jsonify({'clusters': {'nodes': nodes, 'links': links}})
+		try:
+			article_list = db.get_current_search()
+			clusters = make_clusters(article_list)
+			db.save_clusters(clusters) # save clusters to db for later retreval
+			# final data should be in form { nodes: [], links: [] }
+			nodes = [{'id': 'root', 'name': query, 'val': 10}]
+			nodes += [{'id': cluster, 'name': cluster, 'val': 5} for cluster in clusters]
+			links = [{'source': 'root', 'target': node['id']} for node in nodes[1:]]
+			return jsonify({'clusters': {'nodes': nodes, 'links': links}})
+		except:
+			return jsonify({'clusters': {'nodes': [], 'links': []}})
 
 	@app.route('/select-cluster/<string:cluster>')
 	def select_cluster(cluster):
@@ -227,10 +206,16 @@ def route_init(app):
 	def get_grant_analysis(query):
 		## Added the categories which must be a list grant categories
 		categories = ["Undefined", "M", "D", "E", "C"]
-		floors, ceilings, labels = complete_analysis(db.get_grants(query, categories))
+		floors, ceilings, labels, contributors = complete_analysis(db.get_grants(query, categories))
 		## Creating labels
+		if len(labels) > 28:
+			delta =  (labels[len(labels)-1] - labels[0])//27
+			new_labels = []
+			for i in range(28):
+				new_labels.append(labels[0]+(i*delta))
+			labels = new_labels
 		for val in range(len(labels)):
-			labels[val] =  (datetime.datetime.min + datetime.timedelta(days=labels[val])).utcnow()
+			labels[val] =  (datetime.datetime.min + datetime.timedelta(days=labels[val])).strftime("%m-%d-%Y")
 		return jsonify({'floors': floors, 'ceilings': ceilings, 'labels': labels})
 
 
@@ -239,7 +224,6 @@ def route_init(app):
 	def get_keyword_analysis():
 		article_list = db.get_current_search()
 		labels, frequencies = get_keywords(article_list)
-		# labels = [{'title': label} for label in labels]
 		return jsonify({'data': frequencies, 'labels': labels})
 
 	# LKA Vocab (for autocomplete text fields)

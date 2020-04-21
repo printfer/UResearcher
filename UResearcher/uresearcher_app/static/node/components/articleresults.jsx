@@ -3,8 +3,6 @@ import Loading from "./loading";
 
 import TodayIcon from '@material-ui/icons/Today';
 import PersonIcon from '@material-ui/icons/Person';
-import LinkIcon from '@material-ui/icons/Link';
-import ImportContactsIcon from '@material-ui/icons/ImportContacts';
 import Modal from '@material-ui/core/Modal';
 
 export default class ArticleResults extends React.Component {
@@ -14,7 +12,7 @@ export default class ArticleResults extends React.Component {
 		this.state = {
 			showAbstract: Array(100).fill(false),
 			showModal: Array(100).fill(false),
-			modalContents: (<p>test</p>)
+			modalContents: (<p>Loading...</p>)
 		}
 	}
 
@@ -29,24 +27,32 @@ export default class ArticleResults extends React.Component {
 		event.preventDefault();
 		var newShowModal = this.state.showModal;
 		newShowModal[idx] = true;
-		this.setState({ showModal: newShowModal });
+		this.setState({ 
+			showModal: newShowModal,
+			modalContents: (<p>Loading...</p>)
+		});
 
 		// gets citation info for clicked article
 		if (doi != null) {
-			fetch("/citation/" + doi.replace('/', '_'))
-			.then(res => res.json())
-			.then((result) => {
-				this.setState({
-				modalContents: (<p>{JSON.stringify(result)}</p>)
+			fetch("/citation/" + doi.replace(/\//g, '_'))
+				.then(res => res.json())
+				.then((result) => {
+					if (result["citations"] == "") {
+						this.setState({
+							modalContents: (<p>Could not find any articles citing this article.</p>)
+						});
+					}
+					else {
+						this.makeCitationInformation(result["citations"])
+					}
 				});
-			});
 		}
 		else {
 			this.setState({
-				modalContents: (<p>Could not get citation information.</p>)
+				modalContents: (<p>No reference number found for this article.</p>)
 			});
 		}
-		
+
 	}
 
 	closeModal(event, idx) {
@@ -54,6 +60,18 @@ export default class ArticleResults extends React.Component {
 		var newShowModal = this.state.showModal;
 		newShowModal[idx] = false;
 		this.setState({ showModal: newShowModal });
+	}
+
+	makeCitationInformation(citations) {
+		var cites_list = citations.split(',');
+		var contents = [(<p key='0'>These articles cited the above article: </p>)];
+		// adds a link for each citing article
+		cites_list.forEach((citation, i) => {
+			contents.push(<a href={"https://doi.org/" + citation} target="_blank" key={i + 1}>{citation}</a>);
+			contents.push(<br key={(i + 1) * 100} />);
+		});
+		
+		this.setState({modalContents: contents});
 	}
 
 	render() {
@@ -87,17 +105,17 @@ export default class ArticleResults extends React.Component {
 									</div>
 								</div>
 								<div className="col-2">
-                                    {/* <p style={articleInfoIconStyle}> <LinkIcon /> <a href={article.link} target="_blank">Link</a></p> */}
-                                    <a href={article.link} target="_blank">Link</a>
+									{/* <p style={articleInfoIconStyle}> <LinkIcon /> <a href={article.link} target="_blank">Link</a></p> */}
+									<a href={article.link} target="_blank">Link</a>
 									<br />
 									<br />
-                                    {/* <p style={articleInfoIconStyle}> <ImportContactsIcon /> <a href="#" onClick={(e) => this.openModal(e, index, article.doi)}>Citation Info</a> </p> */}
-                                    <a href="#" onClick={(e) => this.openModal(e, index, article.doi)}>Citation Info</a>
+									{/* <p style={articleInfoIconStyle}> <ImportContactsIcon /> <a href="#" onClick={(e) => this.openModal(e, index, article.doi)}>Citation Info</a> </p> */}
+									<a href="#" onClick={(e) => this.openModal(e, index, article.doi)}>Citation Info</a>
 								</div>
 							</div>
 							<div className="row">
 								<div className="col-6">
-									<p style={articleInfoIconStyle}><TodayIcon/> Published: {article.publish_date}</p>
+									<p style={articleInfoIconStyle}><TodayIcon /> Published: {article.publish_date}</p>
 								</div>
 								<div className="col-6">
 									<p style={articleInfoIconStyle}><PersonIcon /> Published By: {article.publisher}</p>

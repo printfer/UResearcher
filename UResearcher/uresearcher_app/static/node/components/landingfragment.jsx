@@ -93,33 +93,47 @@ export default class LandingFragment extends React.Component {
                                 <Carousel autoPlay infiniteLoop width="1000px">
                                     <div>
                                         <img alt="" src="static/images/Screenshot_1.png" />
-                                        {/* <p className="legend">Legend 1</p> */}
                                     </div>
                                     <div>
                                         <img alt="" src="static/images/Screenshot_2.png" />
-                                        {/* <p className="legend">Legend 2</p> */}
                                     </div>
                                     <div>
                                         <img alt="" src="static/images/Screenshot_3.png" />
-                                        {/* <p className="legend">Legend 3</p> */}
                                     </div>
                                     <div>
                                         <img alt="" src="static/images/Screenshot_4.png" />
-                                        {/* <p className="legend">Legend 4</p> */}
                                     </div>
                                     <div>
                                         <img alt="" src="static/images/Screenshot_5.png" />
-                                        {/* <p className="legend">Legend 4</p> */}
                                     </div>
                                     <div>
                                         <img alt="" src="static/images/Screenshot_6.png" />
-                                        {/* <p className="legend">Legend 4</p> */}
                                     </div>
                                 </Carousel>
                             </div>
                         </div>
                     </div>
 
+                    {/* Video */ }
+					<div className="jumbotron jumbotron-fluid my-5 py-5" style={jumbotronStyle} >
+                        <div className="container-fluid text-center">
+                            <h1 className="mb-4">Promotional Video</h1>
+							<iframe width="1000" height="562.5" src="https://www.youtube.com/embed/Itk5-C378_s" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+						</div>
+					</div>
+
+                    {/* Try now */ }
+                    <div className="jumbotron jumbotron-fluid my-5 py-5" style={ourStoryStyle} >
+                        <div className="container text-center">
+                            <div className="row justify-content-center">
+                                <h1 className="mb-4">Get Better Research Experience</h1>
+                                <div className="container">
+                                    <img src="static/images/UResearcher_magnifier.png" className="rounded mx-auto d-block mb-4 img-fluid" style={subHeroStyle} alt="UResearcher_LOGO" />
+                                </div>
+                                <a href="/" className="btn btn-primary btn-lg">Try UResearcher Now</a>
+                            </div>
+                        </div>
+                    </div >
 
                     {/* Developers */ }
                     <div className="jumbotron jumbotron-fluid my-5 py-5" style={jumbotronStyle} >
@@ -140,7 +154,7 @@ export default class LandingFragment extends React.Component {
                     {/* Footer */ }
                     <footer className="footer" style={footerStyle}>
                         <div className="container text-center">
-                            <p className="pt-3">Support us on <i class="fab fa-github mx-1"></i> <a href="https://github.com/printfer/UResearcher" target="_blank">@UResearcher</a></p>
+                            <p className="pt-3">Support us on <i className="fab fa-github mx-1"></i> <a href="https://github.com/printfer/UResearcher" target="_blank">@UResearcher</a></p>
                         </div>
                     </footer>
                 </div>

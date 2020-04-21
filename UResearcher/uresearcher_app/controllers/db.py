@@ -85,7 +85,7 @@ def search_articles(query):
 	# query our elasticsearch database
 	# size parameter is the maximum number of articles to be returned, using 100 for testing purposes
 	print(query)
-	articles = es.search(index='test_index', size='10000', q=query, sort="publish_date:desc", default_operator="AND")
+	articles = es.search(index='test_index', size='1000', q=query, sort="publish_date:desc", default_operator="AND")
 	# articles = es.search(index='test_index', size='100', body={'query': {'match': {'title': query}}}, sort="publish_date:desc")
 	# convert the returned object to the appropriate form
 	articles = articles['hits']['hits']
@@ -152,10 +152,8 @@ def get_grants(query, categories):
 	for grant in grants:
 		if grant.category in categories:
 			keywords =  grant.keywords.split(",")
-			for word in grant_query:
-				if word in keywords:
-					return_grants.append(grant.__dict__)
-					break
+			if (len(set(keywords).intersection(grant_query)) >= len(grant_query)/2):
+				return_grants.append(grant.__dict__)
 	return return_grants
 
 
@@ -183,8 +181,12 @@ def save_bulk_citations(tuplelist):
 	db.session.commit()
 	
 def get_citation(DOI):
-	entry = Citations.query.filter_by(id=DOI).all()
-	return entry
+	citation = Citations.query.filter_by(id=DOI).first()
+	# convert from db object to dictionary
+	if citation == None:
+		return None
+	else:
+		return citation.__dict__
 
 def delete_all_citations():
 	db.session.query(Citations).delete()

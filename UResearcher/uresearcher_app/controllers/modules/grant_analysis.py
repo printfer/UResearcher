@@ -171,4 +171,4 @@ def complete_analysis(data):
 
 
 
-	return ret_floors, ret_ceils, labels
+	return ret_floors, ret_ceils, labels, len(data)

@@ -10,6 +10,7 @@ export default class Grant extends React.Component {
 		this.state = {
 			grant_floors: Array(0),
 			grant_ceilings: Array(0),
+			grant_labels: Array(0),
 			grantsLoaded: false
 		};
 	}
@@ -22,6 +23,7 @@ export default class Grant extends React.Component {
 				this.setState({
 					grant_floors: result['floors'],
 					grant_ceilings: result['ceilings'],
+					grant_labels: result['labels'],
 					grantsLoaded: true
 				});
 			});
@@ -38,7 +40,7 @@ export default class Grant extends React.Component {
 							height={600}
 							margin={{ left: 80, right: 10, top: 10, bottom: 60 }}
 						>
-							<XAxis title="Date" tickLabelAngle={-45} />
+							<XAxis title="Date" tickLabelAngle={-45} tickFormat={(v, i) => this.state.grant_labels[i]} />
 							<YAxis title="Total Grant Amount" tickFormat={(x) => (`${x / 1000000} mil`)} />
 							<HorizontalGridLines />
 							<VerticalGridLines />

@@ -92,7 +92,7 @@ class Index extends React.Component {
 										<div className="row no-gutters justify-content-center align-items-center">
 											<div className="col">
 												<form onSubmit={this.handleSubmit}>
-													<input id="search_bar" className="search_input form-control rounded-pill border-dark bg-dark text-light pl-4 pr-5" type="search" placeholder="Search..." value={this.state.value} onChange={this.handleChange} />
+													<input id="search_bar" className="search_input form-control rounded-pill border-dark bg-dark text-light pl-4 pr-5" type="search" placeholder="Search..." value={this.state.value} onChange={this.handleChange} spellCheck="true"/>
 												</form>
 											</div>
 											<div className="col-auto">

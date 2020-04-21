@@ -18,6 +18,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import HomeIcon from '@material-ui/icons/Home';
 import InfoIcon from '@material-ui/icons/Info';
 import SettingsIcon from '@material-ui/icons/Settings';
+import FeedbackIcon from '@material-ui/icons/Feedback';
 
 import { withStyles } from "@material-ui/core/styles";
 import Menu from "@material-ui/core/Menu";
@@ -189,7 +190,7 @@ export default function SearchAppBar({searchValueInput, placeholderInput, enable
                                             root: classes.inputRoot,
                                             input: classes.inputInput,
                                         }}
-                                        inputProps={{ 'aria-label': 'search' }}
+                                        inputProps={{ 'aria-label': 'search', spellCheck : 'true' }}
                                         onChange={handleSearch}
                                     />
                                 </form>
@@ -234,6 +235,16 @@ export default function SearchAppBar({searchValueInput, placeholderInput, enable
                     </StyledMenuItem>
                 </Link>
                 <Divider/>
+                <Link href="https://github.com/printfer/UResearcher/issues" color="inherit" target="_blank">
+                    <StyledMenuItem>
+                        <ListItemIcon>
+                            <FeedbackIcon fontSize="small" />
+                        </ListItemIcon>
+                        <ListItemText primary="Feedback" />
+                    </StyledMenuItem>
+                </Link>
+                {/*
+                <Divider/>
                 <Link href="/settings" color="inherit">
                     <StyledMenuItem>
                         <ListItemIcon>
@@ -242,6 +253,7 @@ export default function SearchAppBar({searchValueInput, placeholderInput, enable
                         <ListItemText primary="Settings" />
                     </StyledMenuItem>
                 </Link>
+                */}
             </StyledMenu>
 
         </div>

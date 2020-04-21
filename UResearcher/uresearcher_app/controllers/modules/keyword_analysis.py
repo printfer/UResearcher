@@ -1,6 +1,7 @@
 import time
 import re
 import nltk
+#from flask import jsonify
 from nltk.collocations import *
 from datetime import datetime
 from .preprocessing import sentence_parsing
@@ -56,6 +57,10 @@ def generate_grant_keywords(text):
 #their respective dates. 
 def get_keywords(articles):
 
+	#if len(articles) < 10:
+	#	print("KEYWORDS CHECKED")
+	#	return jsonify('Not enough articles available to perform analysis')
+	
 
 	worddict = {}
 	sortdict = {}

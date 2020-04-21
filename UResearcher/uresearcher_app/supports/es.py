@@ -118,8 +118,8 @@ def generate_new_keywords(article_keywords, article_abstract):
 
 def get_articles():
 	# count = 0
-	for i in range(1, 21):
-		with open('doaj_article_data/article_batch_' + str(i) + '.json') as articles:
+	for i in range(6, 16):
+		with open('C:/Users/Will/Desktop/CS/UResearcher/UResearcher/uresearcher_app/supports/doaj_article_data/article_batch_' + str(i) + '.json') as articles:
 			data = json.load(articles)
 			db_articles = []
 			for row in data:
@@ -133,7 +133,7 @@ def get_articles():
 				if 'title' not in row:
 					continue
 				for identifier in row['identifier']:
-					if identifier['type'] == 'doi':
+					if identifier['type'] == 'doi' and 'id' in identifier:
 						doi = identifier['id']						
 				if 'keywords' in row:
 					keywords = ", ".join(row['keywords'])
@@ -159,7 +159,7 @@ def get_articles():
 
 #es = Elasticsearch(['https://search-test2-rafnssinwfmvmuhivk5gstd7lq.us-east-2.es.amazonaws.com'])
 es = Elasticsearch(['localhost:9200'])
-es.indices.delete('test_index')
+# es.indices.delete('test_index')
 bulk(es, get_articles())
 
 # print('done')
