@@ -3,11 +3,11 @@
 1. Examine Graphs of Grants
     * Click on the “Grant Trends” side panel.
     
-    <img src="images/grants1.png" width="1838" height="875"/>
+    <img src="images/grants1.png" />
     
     * Wait for the graphs to load.
     
-    <img src="images/grants2.png" width="1838" height="875"/>
+    <img src="images/grants2.png" />
     
 2. Interpreting the Graph
     * The graph consists of grant allocations from “grants.gov.”
