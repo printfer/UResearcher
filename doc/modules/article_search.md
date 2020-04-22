@@ -36,4 +36,3 @@
     
     <img src="images/search7.png" />
 	
-# Article Search

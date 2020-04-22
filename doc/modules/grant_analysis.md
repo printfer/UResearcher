@@ -14,7 +14,7 @@
     * Each data point represents the sum of grant values for either the floor or ceiling at a point in time.
     * The x-axis measures time; while, the y-axis measures the award response in millions of dollars.
 
-# Developer Documentation -
+# Developer Documentation
 
 Author: Christopher Allan Liu
 Updated by: 4/15/2020

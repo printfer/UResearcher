@@ -16,9 +16,7 @@
     * For example, given the search “acid rain effects on concrete lifespan,” the program determines that all papers within this topic can be categorized into “china,” “background,” “nitrite,” “production,” and “questions.”
     * Clicking on a cluster will create a search within both the original search and the chosen cluster topic.
 
-# Developer Documentation -
-
-# Clustering
+# Developer Documentation
 
 *  ### readFromListToIgnore()
 

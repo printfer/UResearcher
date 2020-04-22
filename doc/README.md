@@ -2,12 +2,13 @@
 
 ## Main App 
 
-## Database
+* [Article Search](./modules/article_search.md)
 
 ## Modules
 
-* [Article Search](./modules/article_search.md)
 * [Clustering](./modules/clustering.md)
+* [Grant Analysis](./modules/grant_analysis.md)
 * [Keyword Analysis](./modules/keyword_analysis.md)
 * [Latent Knowledge Analysis](./modules/latent_knowledge_analysis.md)
+* [Summarization](./modules/summary.md)
 

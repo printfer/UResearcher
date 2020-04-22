@@ -189,7 +189,7 @@ class SearchResults extends React.Component {
 
         const instructionHintText = " <click the text for more details>"
         const articleInstructionLink = "https://github.com/printfer/UResearcher/blob/master/doc/modules/article_search.md"
-        const articleInstructionText = "Access the article results of the search"
+        const articleInstructionText = "Access the article results of the search" + instructionHintText
         const clusterInstructionLink = "https://github.com/printfer/UResearcher/blob/master/doc/modules/clustering.md"
         const clusterInstructionText = "Examine the clustered labels of the search results" + instructionHintText
         const grantInstructionLink = "https://github.com/printfer/UResearcher/blob/master/doc/modules/grant_analysis.md"
@@ -198,8 +198,8 @@ class SearchResults extends React.Component {
         const keywordInstructionText = "Access the keyword frequency graph from the search" + instructionHintText
         const latentInstructionLink = "https://github.com/printfer/UResearcher/blob/master/doc/modules/latent_knowledge_analysis.md"
         const latentInstructionText = "View phrase connections and word relations within the results page" + instructionHintText
-        const summaryInstructionLink = ""
-        const summaryInstructionText = "Examine an auto-generated summary created from the search results" 
+        const summaryInstructionLink = "https://github.com/printfer/UResearcher/blob/master/doc/modules/summary.md"
+        const summaryInstructionText = "Examine an auto-generated summary created from the search results" + instructionHintText
 
 
 		return (
@@ -224,7 +224,7 @@ class SearchResults extends React.Component {
 							>
                                 <Tooltip title={
                                     <React.Fragment>
-                                        <a style={tooltipLinkStyle} target="_blank">{articleInstructionText}</a>
+                                        <a href={articleInstructionLink} style={tooltipLinkStyle} target="_blank">{articleInstructionText}</a>
                                     </React.Fragment>
                                     } placement="right" interactive arrow>
                                     <Tab icon={<i className="fas fa-list"></i>} label="ARTICLES" />
@@ -259,7 +259,7 @@ class SearchResults extends React.Component {
                                 </Tooltip>
                                 <Tooltip title={
                                     <React.Fragment>
-                                        <a style={tooltipLinkStyle} target="_blank">{summaryInstructionText}</a>
+                                        <a href={summaryInstructionLink} style={tooltipLinkStyle} target="_blank">{summaryInstructionText}</a>
                                     </React.Fragment>
                                     } placement="right" interactive arrow>
                                     <Tab icon={<i className="fas fa-book-reader"></i>} label="SUMMARY" />
