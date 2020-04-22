@@ -1,4 +1,38 @@
-# Latent Knowledge Analysis
+# Using Latent Knowledge Analysis
+
+1. Accessing Latent Knowledge Analysis
+    * Click on the “Latent Knowledge” side panel from the results page.
+    
+    <img src="images/lka1.png" width="1838" height="875"/>
+    
+    * Wait for the results to load.(May take several moments.)
+    
+    <img src="images/lka2.png" width="1838" height="875"/>
+	
+    * Access the graph from the Latent Knowledge page at any time by clicking the keyword projection tab
+	
+    <img src="images/lka3.png" width="1838" height="875"/>
+
+2. Isolating Specific Data Points
+    * Click on the “Target Word(s)” bar to show a list of available words selection.
+
+    <img src="images/lka4.png" width="1838" height="875"/>
+	
+    * Select any desired words to isolate
+    * Clink the “Find” button to select and isolate the words on the graph.
+	
+    <img src="images/lka5.png" width="1838" height="875"/>
+	
+3. Interpreting Keyword Projection
+    * The graph uses words from the articles in the search results.
+    * Each point represents a word interest in the search topic.
+    * The closer the words are located on the graph, the more likely the words are related, by context or meaning.
+
+3. Accessing Cosine Similarity
+
+
+
+# Developer Documentation
 
 *  ### get_wordvecs(articles)
 
