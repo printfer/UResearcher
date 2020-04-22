@@ -3,20 +3,20 @@
 1. Examine Graphs of Keywords
     * Click on the “Keyword Trends” side panel from the results page.
     
-    <img src="images/keywords1.png" width="1838" height="875"/>
+    <img src="images/keywords1.png" />
     
     * Wait for the graphs to load.
     
-    <img src="images/keywords2.png" width="1838" height="875"/>
+    <img src="images/keywords2.png" />
 
 2. Choosing Keywords To Graph
     * Choose keywords to include/exclude in the graph.
 
-    <img src="images/keywords3.png" width="1838" height="875"/>
-    <img src="images/keywords4.png" width="1838" height="875"/>
+    <img src="images/keywords3.png" />
+    <img src="images/keywords4.png" />
 	
     * Wait for system to update graph.
-    <img src="images/keywords5.png" width="1838" height="875"/>
+    <img src="images/keywords5.png" />
 	
 2. Interpreting the Graph
     * The graph uses keywords analyzed from the DOAJ to represent the frequency of keywords with respect time.

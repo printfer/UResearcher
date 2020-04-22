@@ -3,11 +3,11 @@
 1. Examining Clusters
     * After a successful search, click on the “Clusters” side panel.
     
-    <img src="images/clustering1.png" width="1838" height="874"/>
+    <img src="images/clustering1.png" />
     
     * Wait for The Clustering To load from the Search
     
-    <img src="images/clustering2.png" width="1838" height="871"/>
+    <img src="images/clustering2.png" />
     
     * Click on a cluster to begin a search with the cluster key word within the established search results.
 

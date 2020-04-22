@@ -3,34 +3,81 @@
 1. Accessing Latent Knowledge Analysis
     * Click on the “Latent Knowledge” side panel from the results page.
     
-    <img src="images/lka1.png" width="1838" height="875"/>
+    <img src="images/lka1.png" />
     
     * Wait for the results to load.(May take several moments.)
     
-    <img src="images/lka2.png" width="1838" height="875"/>
+    <img src="images/lka2.png" />
 	
     * Access the graph from the Latent Knowledge page at any time by clicking the keyword projection tab
 	
-    <img src="images/lka3.png" width="1838" height="875"/>
+    <img src="images/lka3.png" />
 
 2. Isolating Specific Data Points
     * Click on the “Target Word(s)” bar to show a list of available words selection.
 
-    <img src="images/lka4.png" width="1838" height="875"/>
+    <img src="images/lka4.png" />
 	
     * Select any desired words to isolate
     * Clink the “Find” button to select and isolate the words on the graph.
 	
-    <img src="images/lka5.png" width="1838" height="875"/>
+    <img src="images/lka5.png" />
 	
 3. Interpreting Keyword Projection
     * The graph uses words from the articles in the search results.
-    * Each point represents a word interest in the search topic.
+    * Each point represents a word of interest in the search topic.
     * The closer the words are located on the graph, the more likely the words are related, by context or meaning.
 
-3. Accessing Cosine Similarity
+4. Accessing Cosine Similarity
+    * Click on the “Cosine Similarity” tab on the Latent Knowledge results page.
 
+    <img src="images/lka6.png" />	
+	
+    * Wait for the results to load.
 
+    <img src="images/lka7.png" />
+	
+5. Using Cosine Similarity
+    * From the “Cosine Similarity” tab, click on the “Target Word” to show a list of words to analyze.
+	
+    <img src="images/lka8.png" />
+	
+    * Select a word to a analyze and hit the Analyze button.
+    * Wait for the results to load.
+	
+	<img src="images/lka9.png" />
+	
+6. Interpreting Cosine Similarity Results
+    * The list consists of phrases and words found within the article search space.
+    * The list shows the rating of connections of words to the target word under “similarity.”.
+    * If a word located higher on the list than another word, it has a greater similarity than that word.
+	
+7. Accessing Phrase Connections	
+    * Click on the “Phrase Connection” tab on the Latent Knowledge results page.
+	
+    <img src="images/lka10.png" />
+	
+    * Wait for the results to load.
+
+    <img src="images/lka11.png" />	
+	
+8. Using Phrase Connections
+    * Select a primary topic and related topics of interest, to compare.
+	
+	<img src="images/lka12.png" />
+	
+    * Choose the number of connections you wish to see between topics.
+	
+	<img src="images/lka13.png" />
+	
+    * Click on “Evaluate” and wait for the result to load.
+	
+	<img src="images/lka14.png" />
+	
+9. Interpreting Phrase Connection Results
+    * The nodes on the graph originate from the pool of keywords from the articles from search results.
+    * Each node between the primary topic and related topic represents a connection between the topics.
+    * Connections will generate that number of most common link words.
 
 # Developer Documentation
 
