@@ -111,7 +111,7 @@ def make_clusters(articles):
 
 	for x in range(len(articles)):
 		if str(labels[x]) not in clusters:
-					clusters[str(labels[x])] = [articles[x]]
+			clusters[str(labels[x])] = [articles[x]]
 		else:
 			clusters[str(labels[x])].append(articles[x])
 
