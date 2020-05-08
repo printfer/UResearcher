@@ -3,6 +3,8 @@
 
 ## User Guide
 
+Please install `python3` and `python3-venv` first
+
 ### On Windows 
 
 When you use UResearcher at the first time, do setup:

@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
 ## apt
-apt update
-apt upgrade
-apt install python3 
-apt install python3-venv  
+# apt update
+# apt upgrade
+# apt install python3 
+# apt install python3-venv  
 
 ## setup venv
 python3 -m venv venv
