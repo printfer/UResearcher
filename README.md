@@ -2,7 +2,7 @@
 
 <img src="UResearcher_LOGO/UResearcher_circle.png" width="200" height="200" alt="UResearcher_circle"/>
 
-UResearcher is an invaluable application for researchers to reduce unnecessary searching while providing worthwhileoutlets. Some basic functions of UResearcher are organizing topics, Identifies knowledge using Latent KnowledgeAnalysis and other machine learning techniques to finding missing information, Analyzes and predicts trends for fruitfulresearch opportunities.
+UResearcher is an invaluable application for researchers to reduce unnecessary searching while providing worthwhile outlets. Some basic functions of UResearcher are organizing topics, Identifies knowledge using Latent Knowledge Analysis and other machine learning techniques to finding missing information, Analyzes and predicts trends for fruitful research opportunities.
 
 
 
